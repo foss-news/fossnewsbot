@@ -42,7 +42,7 @@ empty_keyboard = InlineKeyboardMarkup()
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.reply("Hi!\nI'm FossNews Bot!", reply_markup=next_keyboard)
+    await message.answer("Hi!\nI'm FossNews Bot!", reply_markup=next_keyboard)
 
 @dp.callback_query_handler()
 async def answer(callback: types.CallbackQuery):
