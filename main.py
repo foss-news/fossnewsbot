@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import sys
+import base64
 from argparse import ArgumentParser
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
@@ -22,9 +23,6 @@ GREETING = "Hi!\nI'm FossNews Bot!"
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
-news = {}
-
-CACHE_FILE = './cache.json'
 TOKEN = ''
 API_PASS = ''
 ENDPOINT = ''
@@ -35,7 +33,8 @@ parser.add_argument('-с', '--token',
 args = parser.parse_args()
 
 try:
-    API_PASS = os.environ['FOSS_API_PASS']
+    decodedBytes = base64.urlsafe_b64decode(os.environ['FOSS_API_PASS'])
+    API_PASS = str(decodedBytes, "utf-8")
     TOKEN = os.environ['FOSS_TOKEN']
     config = json.loads(open(args.CONFIG, 'r').read())
     ENDPOINT = config['endpoint']
@@ -45,27 +44,11 @@ except Exception as e:
 if len(API_PASS) == 0 or len(TOKEN) == 0 or len(ENDPOINT) == 0:
     sys.exit('No config!')
 
-if os.path.exists(CACHE_FILE):
-    with open(CACHE_FILE, 'r') as f_read:
-        tmp_file = f_read.read()
-        if len(tmp_file) != 0:
-            news = json.loads(tmp_file)
-
 fngs = fngsapi.FNGS(ENDPOINT, API_PASS)
 
 # Initialize bot and dispatcher
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
-
-# Keyboard "In digest?"
-digest_keyboard = InlineKeyboardMarkup()
-digest_include = InlineKeyboardButton(text='Включаем в дайджест?', callback_data='digest_include')
-digest_yes = InlineKeyboardButton(text=BTN_YES, callback_data='digest_yes')
-digest_no = InlineKeyboardButton(text=BTN_NO, callback_data='digest_no')
-digest_unknown = InlineKeyboardButton(text=BTN_UNKNOWN, callback_data='digest_unknown')
-digest_keyboard.add(digest_include)
-digest_keyboard.row(digest_yes, digest_no)
-digest_keyboard.row(digest_unknown)
 
 # Keyboard "Is main?"
 is_main_keyboard = InlineKeyboardMarkup()
@@ -97,33 +80,37 @@ async def answer(callback: types.CallbackQuery):
     if callback.data == 'next_news':
         tmp_news = fngs.get_news_by_id(callback.from_user.id)
         if tmp_news != 'empty':
-            news[callback.from_user.id] = tmp_news
-            with open(CACHE_FILE, 'w') as f_write:
-                f_write.write(json.dumps(news))
+            digest_keyboard = InlineKeyboardMarkup()
+            digest_include = InlineKeyboardButton(text='Включаем в дайджест?', callback_data='digest_include')
+            digest_yes = InlineKeyboardButton(text=BTN_YES, callback_data=f"{tmp_news['id']}_digest_yes")
+            digest_no = InlineKeyboardButton(text=BTN_NO, callback_data=f"{tmp_news['id']}_digest_no")
+            digest_unknown = InlineKeyboardButton(text=BTN_UNKNOWN, callback_data=f"{tmp_news['id']}_digest_unknown")
+            digest_keyboard.add(digest_include)
+            digest_keyboard.row(digest_yes, digest_no)
+            digest_keyboard.row(digest_unknown)
             await callback.message.edit_text(
-                f"{news[callback.from_user.id]['title']}\n{news[callback.from_user.id]['url']}",
+                f"{tmp_news['title']}\n{tmp_news['url']}",
                 reply_markup=digest_keyboard)
             await callback.answer()
         else:
             await callback.answer('Пока что новостей нет...\nЗаходите позже')
 
     # "In digest?" block
-    if callback.data == 'digest_include':
+    elif callback.data == 'digest_include':
         await callback.answer(text='Включаем в дайджест?')
     try:
-        if callback.data == 'digest_yes':
-            fngs.digest_send_data(callback.from_user.id, news[callback.from_user.id]['id'], IN_DIGEST)
-        elif callback.data == 'digest_no':
-            fngs.digest_send_data(callback.from_user.id, news[callback.from_user.id]['id'], IGNORED)
-        elif callback.data == 'digest_unknown':
-            fngs.digest_send_data(callback.from_user.id, news[callback.from_user.id]['id'], UNKNOWN)
+        callback_data = callback.data.split('_')
+        if callback_data[1] == 'digest':
+            if callback_data[2] == 'yes':
+                fngs.digest_send_data(callback.from_user.id, callback_data[0], IN_DIGEST)
+            elif callback_data[2] == 'no':
+                fngs.digest_send_data(callback.from_user.id, callback_data[0], IGNORED)
+            elif callback_data[2] == 'unknown':
+                fngs.digest_send_data(callback.from_user.id, callback_data[0], UNKNOWN)
     except KeyError as e:
         logging.debug(e)
         await callback.message.edit_text(ANSWER, reply_markup=next_keyboard)
-    if 'digest_' in callback.data and callback.data != 'digest_include':
-        del news[callback.from_user.id]
-        with open(CACHE_FILE, 'w') as f_write:
-            f_write.write(json.dumps(news))
+    if '_digest_' in callback.data and callback.data != '_digest_include':
         await callback.answer()
         await callback.message.edit_text(ANSWER, reply_markup=next_keyboard)
 
