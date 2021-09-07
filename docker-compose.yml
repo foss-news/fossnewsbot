@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  fossnewsbot:
+    image: "fossnewsbot:latest"
+    build:
+      context: .
+    container_name: fossnewsbot
+    environment:
+      FOSSNEWSBOT_ENV: production
+    hostname: fossnewsbot
+    restart: unless-stopped
+  fossnewsbot-dev:
+    image: "fossnewsbot-dev:latest"
+    build:
+      context: .
+    container_name: fossnewsbot-dev
+    environment:
+      FOSSNEWSBOT_ENV: development
+    hostname: fossnewsbot

@@ -1,0 +1,135 @@
+# FOSS News Bot.
+# Copyright (C) YEAR PermLUG
+# This file is distributed under the same license as the fossnewsbot package.
+# Vasiliy Polyakov <fossnews@invasy.dev>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: fossnewsbot 0.1.0\n"
+"POT-Creation-Date: 2021-09-07 02:24+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: fossnewsbot.py\n"
+
+#: fossnewsbot.py:96 fossnewsbot.py:206
+msgid "Next"
+msgstr ""
+
+#: fossnewsbot.py:105
+msgid "Yes"
+msgstr ""
+
+#: fossnewsbot.py:106
+msgid "No"
+msgstr ""
+
+#: fossnewsbot.py:107
+msgid "Don't know"
+msgstr ""
+
+#: fossnewsbot.py:114
+msgid "Keep"
+msgstr ""
+
+#: fossnewsbot.py:124
+msgid "Include in digest?"
+msgstr ""
+
+#: fossnewsbot.py:128
+msgid "Include in main news?"
+msgstr ""
+
+#: fossnewsbot.py:132
+msgid "Choose category"
+msgstr ""
+
+#: fossnewsbot.py:136
+msgid "English"
+msgstr ""
+
+#: fossnewsbot.py:136
+msgid "Russian"
+msgstr ""
+
+#: fossnewsbot.py:137 fossnewsbot.py:143
+msgid "Unknown"
+msgstr ""
+
+#: fossnewsbot.py:146
+msgid "Date"
+msgstr ""
+
+#: fossnewsbot.py:147
+msgid "Language"
+msgstr ""
+
+#: fossnewsbot.py:148
+msgid "Category"
+msgstr ""
+
+#: fossnewsbot.py:180
+msgid ""
+"No news yet.\n"
+"Please, try again later."
+msgstr ""
+
+# All `.` and `!` must be escaped by backslashes
+#: fossnewsbot.py:190
+#, python-brace-format
+msgid ""
+"Command {command} is not implemented yet\\.\n"
+"But I have it in my backlog\\! 😉\n"
+"Please, check {channel} and {chat} for updates\\."
+msgstr ""
+
+#: fossnewsbot.py:195
+msgid "channel"
+msgstr ""
+
+#: fossnewsbot.py:196
+msgid "chat"
+msgstr ""
+
+# All `.` and `!` must be escaped by backslashes
+#: fossnewsbot.py:203
+#, python-brace-format
+msgid ""
+"Something went wrong\\.\n"
+"Please, press {next} and try again\\."
+msgstr ""
+
+#: fossnewsbot.py:219
+msgid ""
+"Hi! I'm FOSS News Bot!\n"
+"I can send you news articles so you can help to categorize them for a new "
+"digest."
+msgstr ""
+
+#: fossnewsbot.py:259
+msgid "In digest"
+msgstr ""
+
+#: fossnewsbot.py:263
+msgid "Not in digest"
+msgstr ""
+
+#: fossnewsbot.py:265
+msgid "Skip"
+msgstr ""
+
+#: fossnewsbot.py:272
+msgid "Main"
+msgstr ""
+
+#: fossnewsbot.py:274
+msgid "Short"
+msgstr ""

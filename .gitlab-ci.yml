@@ -1,44 +1,39 @@
-default:
-        image: docker:latest
-services:
-        - docker:dind
-
 variables:
-  CI_REGISTRY_IMAGE: 'registry.dc7342.im/lemon/fossnewsbot'
   CI_REGISTRY: 'registry.dc7342.im'
+  CI_REGISTRY_IMAGE: 'registry.dc7342.im/lemon/fossnewsbot'
+
+image: docker:latest
+services:
+- docker:dind
+
 before_script:
-  - docker info
-  - export
-  - echo $CI_REGISTRY
-  - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u "gitlab-ci-token" --password-stdin
+- echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "gitlab-ci-token" --password-stdin
 
 stages:
-        - build
-        - push
+- build
+- push
 
 Build:
   stage: build
   script:
-    - docker pull $CI_REGISTRY_IMAGE:latest || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  - docker pull "$CI_REGISTRY_IMAGE:latest" || true
+  - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
 
-# Tag the "master" branch as "latest"
 Push latest:
   stage: push
   only:
-    - master
+  - master
   script:
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
-    - docker push $CI_REGISTRY_IMAGE:latest
+  - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
+  - docker push "$CI_REGISTRY_IMAGE:latest"
 
-# Docker tag any Git tag
 Push tag:
   stage: push
   only:
-    - develop
+  - develop
   script:
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
-    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
-    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"

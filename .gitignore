@@ -1,4 +1,6 @@
-.idea
-__pycache__
-venv
-cache.json
+.idea/
+.vscode/
+venv/
+__pycache__/
+.secrets.*
+*.mo

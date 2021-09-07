@@ -1,0 +1,12 @@
+.git*
+.idea/
+.vscode/
+venv/
+__pycache__/
+.editorconfig
+.yamllint.yml
+docker-compose.yml
+Makefile
+*.pot
+*.mo
+*.md
