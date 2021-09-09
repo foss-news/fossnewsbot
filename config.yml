@@ -6,6 +6,7 @@ default:
   marker:
     date: "🗓"
     lang: "🌏"
+    type: "🏷"
     category: "🗂"
     include: "✅"
     exclude: "⛔️"
@@ -15,13 +16,23 @@ default:
     error: "🤔"
   keyboard:
     columns: 3
+  features:
+    is_main: false
+    types: false
+    categories: false
 development:
   log:
     level: info
   fngs:
     endpoint: "https://fn.permlug.org/api/v1/"
+  timeout:
+    token: 29 # days
+    cache:  0 # days; 0 — do not refresh
 production:
   log:
     level: info
   fngs:
     endpoint: "https://fn.permlug.org/api/v1/"
+  timeout:
+    token: 29 # days
+    cache:  1 # days; 0 — do not refresh

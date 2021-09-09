@@ -5,6 +5,7 @@ venv/
 __pycache__/
 .editorconfig
 .yamllint.yml
+requirements-dev.txt
 docker-compose.yml
 Makefile
 *.pot

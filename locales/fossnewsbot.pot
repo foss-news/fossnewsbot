@@ -1,4 +1,4 @@
-# FOSS News Bot.
+# FOSS News Telegram Bot.
 # Copyright (C) YEAR PermLUG
 # This file is distributed under the same license as the fossnewsbot package.
 # Vasiliy Polyakov <fossnews@invasy.dev>, 2021.
@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 0.1.0\n"
-"POT-Creation-Date: 2021-09-07 02:24+0500\n"
+"POT-Creation-Date: 2021-09-09 00:12+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
@@ -16,74 +16,46 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
-"X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: fossnewsbot.py\n"
+"X-Poedit-Basepath: ../fossnewsbot\n"
+"X-Poedit-SearchPath-0: __init__.py\n"
+"X-Poedit-SearchPath-1: keyboards.py\n"
 
-#: fossnewsbot.py:96 fossnewsbot.py:206
-msgid "Next"
-msgstr ""
-
-#: fossnewsbot.py:105
-msgid "Yes"
-msgstr ""
-
-#: fossnewsbot.py:106
-msgid "No"
-msgstr ""
-
-#: fossnewsbot.py:107
-msgid "Don't know"
-msgstr ""
-
-#: fossnewsbot.py:114
-msgid "Keep"
-msgstr ""
-
-#: fossnewsbot.py:124
-msgid "Include in digest?"
-msgstr ""
-
-#: fossnewsbot.py:128
-msgid "Include in main news?"
-msgstr ""
-
-#: fossnewsbot.py:132
-msgid "Choose category"
-msgstr ""
-
-#: fossnewsbot.py:136
+#: __init__.py:71
 msgid "English"
 msgstr ""
 
-#: fossnewsbot.py:136
+#: __init__.py:71
 msgid "Russian"
 msgstr ""
 
-#: fossnewsbot.py:137 fossnewsbot.py:143
+#: __init__.py:72 __init__.py:78 __init__.py:79
 msgid "Unknown"
 msgstr ""
 
-#: fossnewsbot.py:146
+#: __init__.py:82
 msgid "Date"
 msgstr ""
 
-#: fossnewsbot.py:147
+#: __init__.py:83
 msgid "Language"
 msgstr ""
 
-#: fossnewsbot.py:148
+#: __init__.py:84
+msgid "Type"
+msgstr ""
+
+#: __init__.py:85
 msgid "Category"
 msgstr ""
 
-#: fossnewsbot.py:180
+#: __init__.py:122
 msgid ""
 "No news yet.\n"
 "Please, try again later."
 msgstr ""
 
-# All `.` and `!` must be escaped by backslashes
-#: fossnewsbot.py:190
+#: __init__.py:132
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -91,45 +63,80 @@ msgid ""
 "Please, check {channel} and {chat} for updates\\."
 msgstr ""
 
-#: fossnewsbot.py:195
+#: __init__.py:137
 msgid "channel"
 msgstr ""
 
-#: fossnewsbot.py:196
+#: __init__.py:138
 msgid "chat"
 msgstr ""
 
-# All `.` and `!` must be escaped by backslashes
-#: fossnewsbot.py:203
+#: __init__.py:145
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 msgstr ""
 
-#: fossnewsbot.py:219
+#: __init__.py:148 keyboards.py:71
+msgid "Next"
+msgstr ""
+
+#: __init__.py:161
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 msgstr ""
 
-#: fossnewsbot.py:259
+#: __init__.py:201
 msgid "In digest"
 msgstr ""
 
-#: fossnewsbot.py:263
+#: __init__.py:205
 msgid "Not in digest"
 msgstr ""
 
-#: fossnewsbot.py:265
+#: __init__.py:207
 msgid "Skip"
 msgstr ""
 
-#: fossnewsbot.py:272
+#: __init__.py:214
 msgid "Main"
 msgstr ""
 
-#: fossnewsbot.py:274
+#: __init__.py:216
 msgid "Short"
+msgstr ""
+
+#: keyboards.py:49
+msgid "Yes"
+msgstr ""
+
+#: keyboards.py:50
+msgid "No"
+msgstr ""
+
+#: keyboards.py:52
+msgid "Don't know"
+msgstr ""
+
+#: keyboards.py:60
+msgid "Keep"
+msgstr ""
+
+#: keyboards.py:78
+msgid "Include in digest?"
+msgstr ""
+
+#: keyboards.py:82
+msgid "Include in main news?"
+msgstr ""
+
+#: keyboards.py:86
+msgid "Choose type"
+msgstr ""
+
+#: keyboards.py:90
+msgid "Choose category"
 msgstr ""

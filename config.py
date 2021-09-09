@@ -1,4 +1,4 @@
-"""FOSS News Telegram Bot Configuration"""
+"""FOSS News Telegram Bot settings"""
 
 #  Copyright (C) 2021 PermLUG
 #
@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from dynaconf import Dynaconf
+from dynaconf import Dynaconf, Validator
 
 PREFIX = 'FOSSNEWSBOT'
 
@@ -27,4 +27,28 @@ config = Dynaconf(
     env_switcher=f'{PREFIX}_ENV',
     environments=True,
     settings_files=['config.yml', '.secrets.yml'],
+    validators=[
+        Validator('bot.token', 'fngs.username', 'fngs.username', must_exist=True),
+        Validator('fngs.endpoint', default='https://fn.permlug.org/api/v1/'),
+        Validator('log.level', default='info'),
+        Validator('localedir', default='locales'),
+        Validator('url.channel', default='https://t.me/permlug'),
+        Validator('url.chat', default='https://t.me/permlug_chat'),
+        Validator('marker.date', default='🗓'),
+        Validator('marker.lang', default='🌏'),
+        Validator('marker.type', default='🏷'),
+        Validator('marker.category', default='🗂'),
+        Validator('marker.include', default='✅'),
+        Validator('marker.exclude', default='⛔️'),
+        Validator('marker.unknown', default='🤷🏻‍♂️'),
+        Validator('marker.main', default='❗️'),
+        Validator('marker.short', default='📃'),
+        Validator('marker.error', default='🤔'),
+        Validator('keyboard.columns', default=3),
+        Validator('timeout.token', default=29),
+        Validator('timeout.cache', default=1),
+        Validator('features.is_main', default=False),
+        Validator('features.types', default=False),
+        Validator('features.categories', default=False),
+    ],
 )

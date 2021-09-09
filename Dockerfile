@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # This Docker image is based on Debian Bullseye instead of Alpine
-# because the latter uses musl and does not support locales.
+# because the latter uses musl and therefore does not support locales.
 FROM python:3.9-slim-bullseye as build
 COPY requirements.txt /
 COPY locales /locales
@@ -45,6 +45,7 @@ COPY --chown=bot:bot entrypoint.sh *.py *.yml ./
 # Docker (up to version 20.10) cannot copy multiple directories in a single layer (`COPY` command), its content only.
 # See https://stackoverflow.com/questions/26504846/copy-directory-to-another-directory-using-add-command.
 # So copying directories one by one.
+COPY --chown=bot:bot fossnewsbot fossnewsbot
 COPY --from=build --chown=bot:bot /venv venv
 COPY --from=build --chown=bot:bot /locales locales
 USER bot

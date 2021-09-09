@@ -24,13 +24,15 @@ to handle configuration files and environment variables.
 ### Parameters
 | Key                | Description                                      | Secret? | Type  | Default value                      |
 |--------------------|--------------------------------------------------|:-------:|-------|------------------------------------|
+| `log.level`        | Logging level                                    | No      | `str` | `"info"`                           |
 | `fngs.endpoint`    | FOSS News Gathering Server API endpoint          | No      | `str` | `"https://fn.permlug.org/api/v1/"` |
 | `fngs.username`    | Username for FOSS News Gathering Server API      | **Yes** | `str` |                                    |
 | `fngs.password`    | Password for FOSS News Gathering Server API      | **Yes** | `str` |                                    |
 | `bot.token`        | Authentication token for [Telegram Bot API][bot] | **Yes** | `str` |                                    |
+| `timeout.token`    | Timeout for FNGS token (in days)                 | No      | `int` | `29`                               |
+| `timeout.cache`    | Timeout for type and categories cache (in days)  | No      | `int` | `1`                                |
 | `url.channel`      | URL of [PermLUG channel][channel] in Telegram    | No      | `str` | `"https://t.me/permlug"`           |
 | `url.chat`         | URL of [PermLUG chat][chat] in Telegram          | No      | `str` | `"https://t.me/permlug_chat"`      |
-| `log.level`        | Logging level                                    | No      | `str` | `"info"`                           |
 | `localedir`        | Directory with locales (translations)            | No      | `str` | `"locales"`                        |
 | `marker.date`      | Emoji marker for news date and time              | No      | `str` | `"🗓"`                              |
 | `marker.lang`      | Emoji marker for news language                   | No      | `str` | `"🌏"`                              |
