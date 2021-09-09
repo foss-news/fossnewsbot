@@ -52,4 +52,4 @@ USER bot
 RUN sed "/^VIRTUAL_ENV=/s:/:$PWD/:" -i venv/bin/activate && chmod +x entrypoint.sh
 ENV PATH="$workdir:$PATH" LANG="ru_RU.UTF-8" LC_MESSAGES="en_US.UTF-8"
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["python", "fossnewsbot.py"]
+CMD ["python", "-m", "fossnewsbot"]
