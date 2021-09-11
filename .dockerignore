@@ -3,11 +3,13 @@
 .vscode/
 venv/
 __pycache__/
+COPYING
 .editorconfig
 .yamllint.yml
 requirements-dev.txt
 docker-compose.yml
 Makefile
+*.dist
 *.pot
 *.mo
 *.md

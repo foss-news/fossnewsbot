@@ -32,13 +32,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from gettext import translation  # Do not import gettext as `_` explicitly! See comment below.
 import locale
-import logging
+from gettext import translation  # Do not import gettext as `_` explicitly! See comment below.
 
 from aiogram.types import User
 
-from config import config
+from . import log
+from .config import config
 
 
 LANGUAGES = ['en', 'ru']
@@ -48,8 +48,6 @@ translations = {lang: translation(TEXTDOMAIN, localedir=config.localedir, langua
 # Function `_` is added to the global namespace by method `install`.
 # Do not define or import `_` as an alias for `gettext`!
 translations['en'].install()
-
-log = logging.getLogger(__name__)
 
 
 def get_language(user: User) -> str:

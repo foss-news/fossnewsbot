@@ -1,4 +1,4 @@
-# Makefile for FOSS News Telegram Bot translations.
+# Makefile for FOSS News Telegram Bot.
 #
 # Copyright (C) 2021 PermLUG
 #
@@ -28,6 +28,8 @@ localesdir := $(pkgdir)locales/
 domain := $(pkgname)
 languages := en ru
 
+tag := $(pkgname):$(pkgver)
+
 po = $(localesdir)$1/LC_MESSAGES/$(domain).po
 
 src := $(pkgname).py
@@ -35,8 +37,12 @@ pot := $(localesdir)$(domain).pot
 pos := $(foreach lang,$(languages),$(call po,$(lang)))
 mos := $(pos:.po=.mo)
 
-.PHONY: all locales
+.PHONY: all image locales
 all: locales
+
+image: Dockerfile
+	@docker build --tag="$(tag)" --tag="$(pkgname):latest" .
+
 locales: $(mos)
 
 %.mo: %.po

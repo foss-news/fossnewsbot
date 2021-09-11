@@ -9,12 +9,12 @@ FOSS News Telegram Bot sends you those news one by one to filter and categorize.
 ## Run
 ### Development
 ```bash
-docker-compose up fossnewsbot-dev
+docker-compose up -d fossnewsbot-dev
 ```
 
 ### Production
 ```bash
-docker-compose up fossnewsbot
+docker-compose up -d fossnewsbot
 ```
 
 ## Configuration
@@ -29,8 +29,9 @@ to handle configuration files and environment variables.
 | `fngs.username`    | Username for FOSS News Gathering Server API      | **Yes** | `str` |                                    |
 | `fngs.password`    | Password for FOSS News Gathering Server API      | **Yes** | `str` |                                    |
 | `bot.token`        | Authentication token for [Telegram Bot API][bot] | **Yes** | `str` |                                    |
-| `timeout.token`    | Timeout for FNGS token (in days)                 | No      | `int` | `29`                               |
-| `timeout.cache`    | Timeout for type and categories cache (in days)  | No      | `int` | `1`                                |
+| `cache.token.ttl`  | FNGS token time to live (in days)                | No      | `int` | `29`                               |
+| `cache.attrs.ttl`  | News attributes time to live (in days)           | No      | `int` | `1`                                |
+| `cache.users.size` | FNGS users cache size — number of cached users   | No      | `int` | `256`                              |
 | `url.channel`      | URL of [PermLUG channel][channel] in Telegram    | No      | `str` | `"https://t.me/permlug"`           |
 | `url.chat`         | URL of [PermLUG chat][chat] in Telegram          | No      | `str` | `"https://t.me/permlug_chat"`      |
 | `localedir`        | Directory with locales (translations)            | No      | `str` | `"locales"`                        |
@@ -54,6 +55,8 @@ This file is excluded from Git (see [`.gitignore`](.gitignore)).
 
 A value `<dict>.dynaconf_merge = true` must be defined for every dict in every environment
 (see [Merging](https://www.dynaconf.com/merging/ "Merging — Dynaconf Documentation")).
+
+See secrets file template in [`.secrets.yml.dist`](.secrets.yml.dist).
 
 [bot]: https://core.telegram.org/bots/api "Telegram Bot API"
 [channel]: https://t.me/permlug "PermLUG channel"

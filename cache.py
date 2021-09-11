@@ -1,4 +1,4 @@
-"""Cached property with timeout"""
+"""Cache control"""
 
 #  Copyright (C) 2021 PermLUG
 #
@@ -18,30 +18,40 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from datetime import datetime, timedelta
-from typing import Any, Callable, Optional
+from functools import update_wrapper
+from typing import Any, Callable
 
 
-class TimedProperty:
-    """Decorator for cached property with timeout"""
-    def __init__(self, timeout: timedelta):
-        self._timeout: timedelta = timeout
-        self._updated_at: Optional[datetime] = None
-        self._update: Optional[Callable[[Any], Any]] = None
-        self._value: Optional[Any] = None
+class CachedProperty:
+    """Decorator for cached property with TTL"""
 
-    def __call__(self, update: Callable[[Any], Any]):
-        self.__doc__ = update.__doc__
-        self._update = update
+    def __init__(self, days: float = 0, seconds: float = 0, microseconds: float = 0, milliseconds: float = 0,
+                 minutes: float = 0, hours: float = 0, weeks: float = 0):
+        self.__ttl__ = timedelta(days=days, seconds=seconds, microseconds=microseconds,
+                                 milliseconds=milliseconds, minutes=minutes, hours=hours, weeks=weeks)
+        self.__dt__ = None
+        self.__wrapped__ = None
 
+    def __call__(self, fget: Callable[[Any], Any]) -> Any:
+        update_wrapper(self, fget)
         return self
 
-    def __get__(self, obj: Any, objtype: Any = None) -> Any:
-        if obj is None or self._update is None:
+    def __get__(self, obj: Any, cls: Any = None) -> Any:
+        if obj is None or self.__wrapped__ is None:
             return self
 
         now = datetime.utcnow()
-        if not self._value or (self._timeout and self._updated_at and now - self._updated_at >= self._timeout):
-            self._value = self._update(obj)
-            self._updated_at = now
+        try:
+            if self.__ttl__ and self.__dt__ and now - self.__dt__ >= self.__ttl__:
+                raise AttributeError
+            return obj.__dict__[self.__name__]
+        except (AttributeError, KeyError):
+            self.__dt__ = now
+            obj.__dict__[self.__name__] = self.__wrapped__(obj)
+            return obj.__dict__[self.__name__]
 
-        return self._value
+    def __delete__(self, obj: Any) -> None:
+        try:
+            del obj.__dict__[self.__name__]
+        except KeyError:
+            pass

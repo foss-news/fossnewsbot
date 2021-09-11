@@ -35,17 +35,19 @@ This module implements FOSS News Gathering Server API calls for FOSS News Telegr
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from datetime import datetime, timedelta
+from datetime import datetime
+from functools import lru_cache
 from json import JSONDecodeError
-import logging
-from typing import Optional, Union
+from logging import getLogger
+from random import randint
+from typing import Optional, Tuple, Union
 from urllib.parse import urlencode
 
-from aiogram.types import User
 import requests
+from aiogram.types import User
 
-from config import config
-from cache import TimedProperty
+from cache import CachedProperty
+from .config import config
 from .tg_user import get_username
 
 
@@ -85,7 +87,7 @@ TEST_CATEGORIES = dict(
     MISC=dict(en='Misc', ru='Разное'),
 )
 
-log = logging.getLogger('fngs')
+log = getLogger('fngs')
 
 
 class Fngs:
@@ -93,7 +95,7 @@ class Fngs:
         self._endpoint = endpoint
         self._auth = dict(username=username, password=password)
 
-    @TimedProperty(timedelta(days=config.timeout.token))
+    @CachedProperty(days=config.cache.token.ttl)
     def token(self):
         """Get FNGS token"""
         t = requests.post(self._endpoint + 'token/', data=self._auth).json()['access']
@@ -120,22 +122,22 @@ class Fngs:
 
         return response
 
-    @TimedProperty(timedelta(days=config.timeout.cache))
+    @CachedProperty(days=config.cache.attrs.ttl)
     def types(self) -> dict:
         """Get types of news"""
         # TODO: replace test types data with a real request
         # t = self.request('telegram-bot-types', 'get').json()
         t = TEST_TYPES
-        log.info('fetched types')
+        log.info('fetched news types')
         return t
 
-    @TimedProperty(timedelta(days=config.timeout.cache))
+    @CachedProperty(days=config.cache.attrs.ttl)
     def categories(self) -> dict:
         """Get categories of news"""
         # TODO: replace test categories data with a real request
         # c = self.request('telegram-bot-categories', 'get').json()
         c = TEST_CATEGORIES
-        log.info('fetched categories')
+        log.info('fetched news categories')
         return c
 
     def register_user(self, user: User) -> Optional[int]:
@@ -144,49 +146,46 @@ class Fngs:
 
         try:
             user_id = self._request('telegram-bot-user', 'post', data=dict(tid=tid, username=username)).json()['id']
-            log.info("user '%s' tid=%i id=%i: registered successfully", username, tid, user_id)
+            log.info("%s (%i|%i) registered successfully", username, tid, user_id)
             return user_id
         except requests.HTTPError as e:
             r = e.response
             if r.status_code == 400:
-                log.warning("user '%s' tid=%i: already registered: %s", username, tid, r.json()['tid'][0])
+                log.warning("%s (%i) already registered: %s", username, tid, r.json()['tid'][0])
                 return None
             else:
                 raise e
 
-    def fetch_user(self, user: User) -> int:
+    @lru_cache(maxsize=config.cache.users.size)
+    def fetch_user(self, user: User) -> Tuple[str, int, int]:
         """Get FNGS id of Telegram user"""
         tid, username = user.id, get_username(user)
 
-        user_id = self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()['id']
-        log.info("user '%s' tid=%i id=%i", username, tid, user_id)
-
-        return user_id
-
-    def fetch_news(self, user: User) -> dict:
-        """Get next random news"""
-        tid, username = user.id, get_username(user)
-
         try:
-            user_id = self.fetch_user(user)
+            user_id = self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()['id']
         except (requests.HTTPError, JSONDecodeError, KeyError):
             user_id = self.register_user(user)
+        log.info("%s (%i|%i) fetched id", username, tid, user_id)
+
+        return username, tid, user_id
+
+    def fetch_news(self, user: User) -> dict:
+        """Get next random uncategorized news for this user"""
+        username, tid, user_id = self.fetch_user(user)
 
         try:
             news = self._request('telegram-bot-one-random-not-categorized-foss-news-digest-record', 'get',
                                  query={'tbot-user-id': user_id}).json()[0]
-            log.info("user '%s' tid=%i id=%i: fetched news=%i title=\"%s\"",
-                     username, tid, user_id, news['id'], news['title'])
+            log.info("%s (%i|%i) fetched news %i \"%s\"", username, tid, user_id, news['id'], news['title'])
         except (JSONDecodeError, IndexError):
             news = {}
-            log.info("user '%s' tid=%i id=%i: no news", username, tid, user_id)
+            log.warning("%s (%i|%i) got no news", username, tid, user_id)
 
         return news
 
     def send_attempt(self, user: User, news_id: int, state: str = None) -> int:
-        """Send current categorization attempt"""
-        tid, username = user.id, get_username(user)
-        user_id = self.fetch_user(user)
+        """Send categorization attempt of this user"""
+        username, tid, user_id = self.fetch_user(user)
 
         if config.env == 'production':
             r = self._request('telegram-bot-digest-record-categorization-attempt', 'post', data=dict(
@@ -197,19 +196,16 @@ class Fngs:
             ))
             attempt_id = r.json()['id']
         else:
-            attempt_id = 42
-        log.info("user '%s' tid=%i id=%i: sent attempt id=%i news=%i state=%s",
-                 username, tid, user_id, attempt_id, news_id, state)
+            attempt_id = randint(0, 255)
+        log.info("%s (%i|%i) sent attempt %i news=%i state=%s", username, tid, user_id, attempt_id, news_id, state)
 
         return attempt_id
 
     def update_attempt(self, user: User, attempt_id: int, field: str, value: Union[bool, int, str]) -> None:
-        """Update current categorization attempt"""
-        tid, username = user.id, get_username(user)
-        user_id = self.fetch_user(user)
+        """Update categorization attempt of this user"""
+        username, tid, user_id = self.fetch_user(user)
 
         if config.env == 'production':
             self._request('telegram-bot-digest-record-categorization-attempt', 'patch',
                           data={'id': attempt_id, field: value})
-        log.info("user '%s' tid=%i id=%i: updated attempt id=%i %s=%s",
-                 username, tid, user_id, attempt_id, field, value)
+        log.info("%s (%i|%i) updated attempt %i %s=%s", username, tid, user_id, attempt_id, field, value)

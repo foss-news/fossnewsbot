@@ -28,4 +28,5 @@ def get_username(user: User) -> str:
         username = user.first_name
         if user.last_name:
             username += ' ' + user.last_name
+
     return username

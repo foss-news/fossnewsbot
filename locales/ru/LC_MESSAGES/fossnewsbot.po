@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 0.1.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
-"POT-Creation-Date: 2021-09-09 00:12+0500\n"
-"PO-Revision-Date: 2021-09-09 00:12+0500\n"
+"POT-Creation-Date: 2021-09-11 03:27+0500\n"
+"PO-Revision-Date: 2021-09-11 03:27+0500\n"
 "Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "Language-Team: none\n"
 "Language: ru\n"
@@ -20,38 +20,37 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../../../fossnewsbot\n"
-"X-Poedit-SearchPath-0: __init__.py\n"
-"X-Poedit-SearchPath-1: keyboards.py\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: __init__.py:71
+#: handlers.py:44
 msgid "English"
 msgstr "английский"
 
-#: __init__.py:71
+#: handlers.py:44
 msgid "Russian"
 msgstr "русский"
 
-#: __init__.py:72 __init__.py:78 __init__.py:79
+#: handlers.py:45 handlers.py:57 handlers.py:60
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: __init__.py:82
+#: handlers.py:53
 msgid "Date"
 msgstr "Дата"
 
-#: __init__.py:83
+#: handlers.py:54
 msgid "Language"
 msgstr "Язык"
 
-#: __init__.py:84
+#: handlers.py:58
 msgid "Type"
 msgstr "Тип"
 
-#: __init__.py:85
+#: handlers.py:61
 msgid "Category"
 msgstr "Категория"
 
-#: __init__.py:122
+#: handlers.py:98
 msgid ""
 "No news yet.\n"
 "Please, try again later."
@@ -60,7 +59,7 @@ msgstr ""
 "Попробуйте ещё раз позже."
 
 # All `.` and `!` must be escaped by backslashes
-#: __init__.py:132
+#: handlers.py:108
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -71,16 +70,16 @@ msgstr ""
 "Но она есть в планах по улучшению бота\\! 😉\n"
 "Следите за обновлениями на {channel} и в {chat}\\."
 
-#: __init__.py:137
+#: handlers.py:113
 msgid "channel"
 msgstr "канале"
 
-#: __init__.py:138
+#: handlers.py:114
 msgid "chat"
 msgstr "чате"
 
 # All `.` and `!` must be escaped by backslashes
-#: __init__.py:145
+#: handlers.py:121
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
@@ -89,11 +88,11 @@ msgstr ""
 "Что-то пошло не так\\.\n"
 "Нажмите {next} и попробуйте ещё раз\\."
 
-#: __init__.py:148 keyboards.py:71
+#: handlers.py:124 keyboards.py:103
 msgid "Next"
 msgstr "Следующая новость"
 
-#: __init__.py:161
+#: handlers.py:137
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
@@ -103,54 +102,54 @@ msgstr ""
 "Я умею присылать новости, чтобы вы могли помочь категоризовать их для нового "
 "дайджеста."
 
-#: __init__.py:201
+#: handlers.py:178
 msgid "In digest"
 msgstr "Добавить в дайджест"
 
-#: __init__.py:205
+#: handlers.py:182
 msgid "Not in digest"
 msgstr "Не добавлять в дайджест"
 
-#: __init__.py:207
+#: handlers.py:184
 msgid "Skip"
 msgstr "Пропустить"
 
-#: __init__.py:214
+#: handlers.py:191
 msgid "Main"
 msgstr "Главная"
 
-#: __init__.py:216
+#: handlers.py:193
 msgid "Short"
 msgstr "Короткой строкой"
 
-#: keyboards.py:49
+#: keyboards.py:82
 msgid "Yes"
 msgstr "Да"
 
-#: keyboards.py:50
+#: keyboards.py:83
 msgid "No"
 msgstr "Нет"
 
-#: keyboards.py:52
+#: keyboards.py:84
 msgid "Don't know"
 msgstr "Не знаю"
 
-#: keyboards.py:60
+#: keyboards.py:92
 msgid "Keep"
 msgstr "Не изменять"
 
-#: keyboards.py:78
+#: keyboards.py:110
 msgid "Include in digest?"
 msgstr "Включить в дайджест?"
 
-#: keyboards.py:82
+#: keyboards.py:114
 msgid "Include in main news?"
 msgstr "Главная новость?"
 
-#: keyboards.py:86
+#: keyboards.py:118
 msgid "Choose type"
 msgstr "Выберите тип"
 
-#: keyboards.py:90
+#: keyboards.py:122
 msgid "Choose category"
 msgstr "Выберите категорию"

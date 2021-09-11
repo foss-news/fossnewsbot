@@ -3,6 +3,9 @@ default:
   url:
     channel: "https://t.me/permlug"
     chat: "https://t.me/permlug_chat"
+  cache:
+    token:
+      ttl: 29 # days
   marker:
     date: "🗓"
     lang: "🌏"
@@ -11,28 +14,36 @@ default:
     include: "✅"
     exclude: "⛔️"
     unknown: "🤷🏻‍♂️"
-    main: "❗️"
+    is_main: "❗️"
     short: "📃"
     error: "🤔"
   keyboard:
     columns: 3
-  features:
-    is_main: false
-    types: false
-    categories: false
 development:
   log:
     level: info
   fngs:
     endpoint: "https://fn.permlug.org/api/v1/"
-  timeout:
-    token: 29 # days
-    cache:  0 # days; 0 — do not refresh
+  cache:
+    attrs:
+      ttl: 0 # days; 0 — no TTL, do not refresh
+    users:
+      size: null
+  features:
+    is_main: true
+    types: true
+    categories: true
 production:
   log:
-    level: info
+    level: warn
   fngs:
     endpoint: "https://fn.permlug.org/api/v1/"
-  timeout:
-    token: 29 # days
-    cache:  1 # days; 0 — do not refresh
+  cache:
+    attrs:
+      ttl: 1 # days; 0 — no TTL, do not refresh
+    users:
+      size: 256
+  features:
+    is_main: false
+    types: false
+    categories: false

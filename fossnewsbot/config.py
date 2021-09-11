@@ -19,6 +19,7 @@
 
 from dynaconf import Dynaconf, Validator
 
+
 PREFIX = 'FOSSNEWSBOT'
 
 config = Dynaconf(
@@ -41,12 +42,13 @@ config = Dynaconf(
         Validator('marker.include', default='✅'),
         Validator('marker.exclude', default='⛔️'),
         Validator('marker.unknown', default='🤷🏻‍♂️'),
-        Validator('marker.main', default='❗️'),
+        Validator('marker.is_main', default='❗️'),
         Validator('marker.short', default='📃'),
         Validator('marker.error', default='🤔'),
         Validator('keyboard.columns', default=3),
-        Validator('timeout.token', default=29),
-        Validator('timeout.cache', default=1),
+        Validator('cache.token.ttl', default=29),
+        Validator('cache.attrs.ttl', default=1),
+        Validator('cache.users.size', default=256),
         Validator('features.is_main', default=False),
         Validator('features.types', default=False),
         Validator('features.categories', default=False),

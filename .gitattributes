@@ -11,9 +11,11 @@
 *.toml          text
 *.yaml          text
 *.yml           text
+*.dist          text
 
 *.txt           text
 *.md            text diff=markdown
+COPYING         text
 
 Makefile        text eol=lf
 
