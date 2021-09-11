@@ -183,6 +183,16 @@ class Fngs:
 
         return news
 
+    def fetch_news_count(self, user: User) -> int:
+        """Fetch count of uncategorized news for this user"""
+        username, tid, user_id = self.fetch_user(user)
+
+        count = self._request('telegram-bot-not-categorized-foss-news-digest-records-count', 'get',
+                              query={'tbot-user-id': user_id}).json()['count']
+        log.info("%s (%i|%i) fetched news count %i", username, tid, user_id, count)
+
+        return count
+
     def send_attempt(self, user: User, news_id: int, state: str = None) -> int:
         """Send categorization attempt of this user"""
         username, tid, user_id = self.fetch_user(user)

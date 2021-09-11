@@ -7,6 +7,7 @@ default:
     token:
       ttl: 29 # days
   marker:
+    count: "📊"
     date: "🗓"
     lang: "🌏"
     keywords: "🏷"

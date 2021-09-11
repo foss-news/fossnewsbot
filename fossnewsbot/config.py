@@ -35,6 +35,7 @@ config = Dynaconf(
         Validator('localedir', default='locales'),
         Validator('url.channel', default='https://t.me/permlug'),
         Validator('url.chat', default='https://t.me/permlug_chat'),
+        Validator('marker.count', default='📊'),
         Validator('marker.date', default='🗓'),
         Validator('marker.lang', default='🌏'),
         Validator('marker.keywords', default='🏷'),

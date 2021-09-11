@@ -50,6 +50,7 @@ def format_news(news: dict) -> str:
     lang = format_lang(news['language'])
     keywords = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic']])
     lines = [
+        md.text(config.marker.count + ' ', md.italic(_('News left')), md.escape_md(': '), md.bold(news['count']), '\n', sep=''),
         md.link(news['title'], news['url']),
         md.text(config.marker.date + ' ', md.italic(_('Date')), md.escape_md(': '), md.bold(dt), sep=''),
         md.text(config.marker.lang + ' ', md.italic(_('Language')), md.escape_md(': '), md.bold(lang), sep=''),
@@ -92,6 +93,7 @@ async def msg_next(msg: Union[Message, CallbackQuery]) -> None:
 
     news = fngs.fetch_news(user)
     if news:
+        news['count'] = fngs.fetch_news_count(user)
         text = format_news(news)
         await bot.send_message(chat_id=msg.chat.id, text=text, reply_markup=keyboards.include(news['id']))
         if cb:

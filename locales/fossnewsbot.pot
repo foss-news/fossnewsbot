@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 0.1.0\n"
-"POT-Creation-Date: 2021-09-11 15:30+0500\n"
+"POT-Creation-Date: 2021-09-11 16:05+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
@@ -28,37 +28,41 @@ msgstr ""
 msgid "Russian"
 msgstr ""
 
-#: handlers.py:45 handlers.py:59 handlers.py:62
+#: handlers.py:45 handlers.py:61 handlers.py:64
 msgid "Unknown"
 msgstr ""
 
-#: handlers.py:54
-msgid "Date"
+#: handlers.py:53
+msgid "News left"
 msgstr ""
 
 #: handlers.py:55
-msgid "Language"
+msgid "Date"
 msgstr ""
 
 #: handlers.py:56
+msgid "Language"
+msgstr ""
+
+#: handlers.py:59
 msgid "Keywords"
 msgstr ""
 
-#: handlers.py:60
+#: handlers.py:62
 msgid "Type"
 msgstr ""
 
-#: handlers.py:64
+#: handlers.py:65
 msgid "Category"
 msgstr ""
 
-#: handlers.py:101
+#: handlers.py:103
 msgid ""
 "No news yet.\n"
 "Please, try again later."
 msgstr ""
 
-#: handlers.py:111
+#: handlers.py:113
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -66,49 +70,49 @@ msgid ""
 "Please, check {channel} and {chat} for updates\\."
 msgstr ""
 
-#: handlers.py:116
+#: handlers.py:118
 msgid "channel"
 msgstr ""
 
-#: handlers.py:117
+#: handlers.py:119
 msgid "chat"
 msgstr ""
 
-#: handlers.py:124
+#: handlers.py:126
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 msgstr ""
 
-#: handlers.py:127 keyboards.py:104
+#: handlers.py:129 keyboards.py:104
 msgid "Next"
 msgstr ""
 
-#: handlers.py:140
+#: handlers.py:142
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 msgstr ""
 
-#: handlers.py:181
+#: handlers.py:183
 msgid "In digest"
 msgstr ""
 
-#: handlers.py:185
+#: handlers.py:187
 msgid "Not in digest"
 msgstr ""
 
-#: handlers.py:187
+#: handlers.py:189
 msgid "Skip"
 msgstr ""
 
-#: handlers.py:194
+#: handlers.py:196
 msgid "Main"
 msgstr ""
 
-#: handlers.py:196
+#: handlers.py:198
 msgid "Short"
 msgstr ""
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 0.1.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
-"POT-Creation-Date: 2021-09-11 15:31+0500\n"
-"PO-Revision-Date: 2021-09-11 15:31+0500\n"
+"POT-Creation-Date: 2021-09-11 16:05+0500\n"
+"PO-Revision-Date: 2021-09-11 16:05+0500\n"
 "Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -29,31 +29,35 @@ msgstr "English"
 msgid "Russian"
 msgstr "Russian"
 
-#: handlers.py:45 handlers.py:59 handlers.py:62
+#: handlers.py:45 handlers.py:61 handlers.py:64
 msgid "Unknown"
 msgstr "Unknown"
 
-#: handlers.py:54
+#: handlers.py:53
+msgid "News left"
+msgstr "News left"
+
+#: handlers.py:55
 msgid "Date"
 msgstr "Date"
 
-#: handlers.py:55
+#: handlers.py:56
 msgid "Language"
 msgstr "Language"
 
-#: handlers.py:56
+#: handlers.py:59
 msgid "Keywords"
 msgstr "Keywords"
 
-#: handlers.py:60
+#: handlers.py:62
 msgid "Type"
 msgstr "Type"
 
-#: handlers.py:64
+#: handlers.py:65
 msgid "Category"
 msgstr "Category"
 
-#: handlers.py:101
+#: handlers.py:103
 msgid ""
 "No news yet.\n"
 "Please, try again later."
@@ -62,7 +66,7 @@ msgstr ""
 "Please, try again later."
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:111
+#: handlers.py:113
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -73,16 +77,16 @@ msgstr ""
 "But I have it in my backlog\\! 😉\n"
 "Please, check {channel} and {chat} for updates\\."
 
-#: handlers.py:116
+#: handlers.py:118
 msgid "channel"
 msgstr "channel"
 
-#: handlers.py:117
+#: handlers.py:119
 msgid "chat"
 msgstr "chat"
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:124
+#: handlers.py:126
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
@@ -91,11 +95,11 @@ msgstr ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 
-#: handlers.py:127 keyboards.py:104
+#: handlers.py:129 keyboards.py:104
 msgid "Next"
 msgstr "Next"
 
-#: handlers.py:140
+#: handlers.py:142
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
@@ -105,23 +109,23 @@ msgstr ""
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 
-#: handlers.py:181
+#: handlers.py:183
 msgid "In digest"
 msgstr "In digest"
 
-#: handlers.py:185
+#: handlers.py:187
 msgid "Not in digest"
 msgstr "Not in digest"
 
-#: handlers.py:187
+#: handlers.py:189
 msgid "Skip"
 msgstr "Skip"
 
-#: handlers.py:194
+#: handlers.py:196
 msgid "Main"
 msgstr "Main"
 
-#: handlers.py:196
+#: handlers.py:198
 msgid "Short"
 msgstr "Short"
 
