@@ -44,7 +44,7 @@ RUN set -eu;\
     echo "en_US\ten_US.UTF-8\nen\ten_US.UTF-8\n${lang%.*}\t${lang}\n${lang%_*}\t${lang}" >/etc/locale.alias;\
     echo "$tz" >/etc/timezone; ln -sf "/usr/share/zoneinfo/$tz" /etc/localtime;\
     useradd --create-home --comment='FOSS News Bot' --user-group bot; yes bot | passwd bot;\
-    mkdir -p "$workdir" \
+    mkdir -p "$workdir"
 
 # Copy bot code and configuration to the image
 WORKDIR "$workdir"
