@@ -48,7 +48,7 @@ RUN set -eu;\
 
 # Copy bot code and configuration to the image
 WORKDIR "$workdir"
-COPY --chown=bot:bot cache.py config.py config.yml .secrets.yml entrypoint.sh ./
+COPY --chown=bot:bot cache.py config.yml .secrets.yml entrypoint.sh ./
 # Docker (up to version 20.10) cannot copy multiple directories in a single layer (`COPY` command), its content only.
 # See https://stackoverflow.com/questions/26504846/copy-directory-to-another-directory-using-add-command.
 # So copying directories one by one.
