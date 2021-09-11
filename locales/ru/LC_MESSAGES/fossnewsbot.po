@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 0.1.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
-"POT-Creation-Date: 2021-09-11 03:27+0500\n"
-"PO-Revision-Date: 2021-09-11 03:27+0500\n"
+"POT-Creation-Date: 2021-09-11 15:30+0500\n"
+"PO-Revision-Date: 2021-09-11 15:30+0500\n"
 "Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "Language-Team: none\n"
 "Language: ru\n"
@@ -30,27 +30,31 @@ msgstr "английский"
 msgid "Russian"
 msgstr "русский"
 
-#: handlers.py:45 handlers.py:57 handlers.py:60
+#: handlers.py:45 handlers.py:59 handlers.py:62
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: handlers.py:53
+#: handlers.py:54
 msgid "Date"
 msgstr "Дата"
 
-#: handlers.py:54
+#: handlers.py:55
 msgid "Language"
 msgstr "Язык"
 
-#: handlers.py:58
+#: handlers.py:56
+msgid "Keywords"
+msgstr "Ключевые слова"
+
+#: handlers.py:60
 msgid "Type"
 msgstr "Тип"
 
-#: handlers.py:61
+#: handlers.py:64
 msgid "Category"
 msgstr "Категория"
 
-#: handlers.py:98
+#: handlers.py:101
 msgid ""
 "No news yet.\n"
 "Please, try again later."
@@ -59,7 +63,7 @@ msgstr ""
 "Попробуйте ещё раз позже."
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:108
+#: handlers.py:111
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -70,16 +74,16 @@ msgstr ""
 "Но она есть в планах по улучшению бота\\! 😉\n"
 "Следите за обновлениями на {channel} и в {chat}\\."
 
-#: handlers.py:113
+#: handlers.py:116
 msgid "channel"
 msgstr "канале"
 
-#: handlers.py:114
+#: handlers.py:117
 msgid "chat"
 msgstr "чате"
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:121
+#: handlers.py:124
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
@@ -88,11 +92,11 @@ msgstr ""
 "Что-то пошло не так\\.\n"
 "Нажмите {next} и попробуйте ещё раз\\."
 
-#: handlers.py:124 keyboards.py:103
+#: handlers.py:127 keyboards.py:104
 msgid "Next"
 msgstr "Следующая новость"
 
-#: handlers.py:137
+#: handlers.py:140
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
@@ -102,23 +106,23 @@ msgstr ""
 "Я умею присылать новости, чтобы вы могли помочь категоризовать их для нового "
 "дайджеста."
 
-#: handlers.py:178
+#: handlers.py:181
 msgid "In digest"
 msgstr "Добавить в дайджест"
 
-#: handlers.py:182
+#: handlers.py:185
 msgid "Not in digest"
 msgstr "Не добавлять в дайджест"
 
-#: handlers.py:184
+#: handlers.py:187
 msgid "Skip"
 msgstr "Пропустить"
 
-#: handlers.py:191
+#: handlers.py:194
 msgid "Main"
 msgstr "Главная"
 
-#: handlers.py:193
+#: handlers.py:196
 msgid "Short"
 msgstr "Короткой строкой"
 
@@ -134,22 +138,22 @@ msgstr "Нет"
 msgid "Don't know"
 msgstr "Не знаю"
 
-#: keyboards.py:92
+#: keyboards.py:93
 msgid "Keep"
 msgstr "Не изменять"
 
-#: keyboards.py:110
+#: keyboards.py:111
 msgid "Include in digest?"
 msgstr "Включить в дайджест?"
 
-#: keyboards.py:114
+#: keyboards.py:115
 msgid "Include in main news?"
 msgstr "Главная новость?"
 
-#: keyboards.py:118
+#: keyboards.py:119
 msgid "Choose type"
 msgstr "Выберите тип"
 
-#: keyboards.py:122
+#: keyboards.py:123
 msgid "Choose category"
 msgstr "Выберите категорию"

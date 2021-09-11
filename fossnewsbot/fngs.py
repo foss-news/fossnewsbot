@@ -97,7 +97,7 @@ class Fngs:
 
     @CachedProperty(days=config.cache.token.ttl)
     def token(self):
-        """Get FNGS token"""
+        """Fetch FNGS token"""
         t = requests.post(self._endpoint + 'token/', data=self._auth).json()['access']
         log.info('fetched token')
         return t
@@ -124,7 +124,7 @@ class Fngs:
 
     @CachedProperty(days=config.cache.attrs.ttl)
     def types(self) -> dict:
-        """Get types of news"""
+        """Fetch types of news"""
         # TODO: replace test types data with a real request
         # t = self.request('telegram-bot-types', 'get').json()
         t = TEST_TYPES
@@ -133,7 +133,7 @@ class Fngs:
 
     @CachedProperty(days=config.cache.attrs.ttl)
     def categories(self) -> dict:
-        """Get categories of news"""
+        """Fetch categories of news"""
         # TODO: replace test categories data with a real request
         # c = self.request('telegram-bot-categories', 'get').json()
         c = TEST_CATEGORIES
@@ -158,7 +158,7 @@ class Fngs:
 
     @lru_cache(maxsize=config.cache.users.size)
     def fetch_user(self, user: User) -> Tuple[str, int, int]:
-        """Get FNGS id of Telegram user"""
+        """Fetch FNGS id of Telegram user"""
         tid, username = user.id, get_username(user)
 
         try:
@@ -170,7 +170,7 @@ class Fngs:
         return username, tid, user_id
 
     def fetch_news(self, user: User) -> dict:
-        """Get next random uncategorized news for this user"""
+        """Fetch next random uncategorized news for this user"""
         username, tid, user_id = self.fetch_user(user)
 
         try:

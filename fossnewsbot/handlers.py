@@ -46,20 +46,22 @@ def format_lang(lang: str) -> str:
 
 
 def format_news(news: dict) -> str:
-    dt = datetime.strptime(news['dt'], '%Y-%m-%dT%H:%M:%S%z').strftime('%c')
+    dt = datetime.strptime(news['dt'], '%Y-%m-%dT%H:%M:%S%z').strftime('%x')
     lang = format_lang(news['language'])
+    keywords = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic']])
     lines = [
         md.link(news['title'], news['url']),
         md.text(config.marker.date + ' ', md.italic(_('Date')), md.escape_md(': '), md.bold(dt), sep=''),
         md.text(config.marker.lang + ' ', md.italic(_('Language')), md.escape_md(': '), md.bold(lang), sep=''),
     ]
+    if keywords:
+        lines.append(md.text(config.marker.keywords + ' ', md.italic(_('Keywords')), md.escape_md(': '), keywords, sep=''),)
     if config.features.types:
         type_ = news['category'] if news['category'] else _('Unknown')
         lines.append(md.text(config.marker.type + ' ', md.italic(_('Type')), md.escape_md(':', type_), sep=''))
     if config.features.categories:
         category = news['subcategory'] if news['subcategory'] else _('Unknown')
-        lines.append(
-            md.text(config.marker.category + ' ', md.italic(_('Category')), md.escape_md(':', category), sep=''))
+        lines.append(md.text(config.marker.category + ' ', md.italic(_('Category')), md.escape_md(':', category), sep=''))
     return md.text(*lines, sep='\n')
 
 
