@@ -1,0 +1,163 @@
+# FOSS News Telegram Bot.
+# Copyright (C) 2021 PermLUG
+# This file is distributed under the same license as the fossnewsbot package.
+# Vasiliy Polyakov <fossnews@invasy.dev>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: fossnewsbot 0.1.0\n"
+"Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
+"POT-Creation-Date: 2021-09-11 16:05+0500\n"
+"PO-Revision-Date: 2021-09-11 16:05+0500\n"
+"Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
+"Language-Team: none\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../../../fossnewsbot\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: handlers.py:44
+msgid "English"
+msgstr "английский"
+
+#: handlers.py:44
+msgid "Russian"
+msgstr "русский"
+
+#: handlers.py:45 handlers.py:61 handlers.py:64
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: handlers.py:53
+msgid "News left"
+msgstr "Новостей осталось"
+
+#: handlers.py:55
+msgid "Date"
+msgstr "Дата"
+
+#: handlers.py:56
+msgid "Language"
+msgstr "Язык"
+
+#: handlers.py:59
+msgid "Keywords"
+msgstr "Ключевые слова"
+
+#: handlers.py:62
+msgid "Type"
+msgstr "Тип"
+
+#: handlers.py:65
+msgid "Category"
+msgstr "Категория"
+
+#: handlers.py:103
+msgid ""
+"No news yet.\n"
+"Please, try again later."
+msgstr ""
+"Новостей пока нет.\n"
+"Попробуйте ещё раз позже."
+
+# All `.` and `!` must be escaped by backslashes
+#: handlers.py:113
+#, python-brace-format
+msgid ""
+"Command {command} is not implemented yet\\.\n"
+"But I have it in my backlog\\! 😉\n"
+"Please, check {channel} and {chat} for updates\\."
+msgstr ""
+"Команда {command} ещё не реализована\\.\n"
+"Но она есть в планах по улучшению бота\\! 😉\n"
+"Следите за обновлениями на {channel} и в {chat}\\."
+
+#: handlers.py:118
+msgid "channel"
+msgstr "канале"
+
+#: handlers.py:119
+msgid "chat"
+msgstr "чате"
+
+# All `.` and `!` must be escaped by backslashes
+#: handlers.py:126
+#, python-brace-format
+msgid ""
+"Something went wrong\\.\n"
+"Please, press {next} and try again\\."
+msgstr ""
+"Что-то пошло не так\\.\n"
+"Нажмите {next} и попробуйте ещё раз\\."
+
+#: handlers.py:129 keyboards.py:104
+msgid "Next"
+msgstr "Следующая новость"
+
+#: handlers.py:142
+msgid ""
+"Hi! I'm FOSS News Bot!\n"
+"I can send you news articles so you can help to categorize them for a new "
+"digest."
+msgstr ""
+"Привет! Я бот FOSS News!\n"
+"Я умею присылать новости, чтобы вы могли помочь категоризовать их для нового "
+"дайджеста."
+
+#: handlers.py:183
+msgid "In digest"
+msgstr "Добавить в дайджест"
+
+#: handlers.py:187
+msgid "Not in digest"
+msgstr "Не добавлять в дайджест"
+
+#: handlers.py:189
+msgid "Skip"
+msgstr "Пропустить"
+
+#: handlers.py:196
+msgid "Main"
+msgstr "Главная"
+
+#: handlers.py:198
+msgid "Short"
+msgstr "Короткой строкой"
+
+#: keyboards.py:82
+msgid "Yes"
+msgstr "Да"
+
+#: keyboards.py:83
+msgid "No"
+msgstr "Нет"
+
+#: keyboards.py:84
+msgid "Don't know"
+msgstr "Не знаю"
+
+#: keyboards.py:93
+msgid "Keep"
+msgstr "Не изменять"
+
+#: keyboards.py:111
+msgid "Include in digest?"
+msgstr "Включить в дайджест?"
+
+#: keyboards.py:115
+msgid "Include in main news?"
+msgstr "Главная новость?"
+
+#: keyboards.py:119
+msgid "Choose type"
+msgstr "Выберите тип"
+
+#: keyboards.py:123
+msgid "Choose category"
+msgstr "Выберите категорию"

@@ -1,0 +1,39 @@
+variables:
+  CI_REGISTRY: 'registry.dc7342.im'
+  CI_REGISTRY_IMAGE: 'registry.dc7342.im/lemon/fossnewsbot'
+
+image: docker:latest
+services:
+- docker:dind
+
+before_script:
+- echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "gitlab-ci-token" --password-stdin
+
+stages:
+- build
+- push
+
+Build:
+  stage: build
+  script:
+  - docker pull "$CI_REGISTRY_IMAGE:latest" || true
+  - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+
+Push latest:
+  stage: push
+  only:
+  - master
+  script:
+  - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
+  - docker push "$CI_REGISTRY_IMAGE:latest"
+
+Push tag:
+  stage: push
+  only:
+  - develop
+  script:
+  - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+  - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+  - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
