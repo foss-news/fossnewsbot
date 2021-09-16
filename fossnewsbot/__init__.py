@@ -29,6 +29,8 @@ from .config import config
 from .fngs import Fngs
 
 
+__version__ = '1.0.0'
+
 log = getLogger(__name__)
 bot = Bot(token=config.bot.token, parse_mode=ParseMode.MARKDOWN_V2)
 dispatcher = Dispatcher(bot)

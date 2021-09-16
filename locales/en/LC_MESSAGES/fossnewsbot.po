@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: fossnewsbot 0.1.0\n"
+"Project-Id-Version: fossnewsbot 1.0.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "POT-Creation-Date: 2021-09-11 16:05+0500\n"
 "PO-Revision-Date: 2021-09-11 16:05+0500\n"
