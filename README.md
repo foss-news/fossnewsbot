@@ -35,8 +35,11 @@ to handle configuration files and environment variables.
 | `url.channel`      | URL of [PermLUG channel][channel] in Telegram    | No      | `str` | `"https://t.me/permlug"`           |
 | `url.chat`         | URL of [PermLUG chat][chat] in Telegram          | No      | `str` | `"https://t.me/permlug_chat"`      |
 | `localedir`        | Directory with locales (translations)            | No      | `str` | `"locales"`                        |
+| `marker.count`     | Emoji marker for news count                      | No      | `str` | `"📊"`                              |
 | `marker.date`      | Emoji marker for news date and time              | No      | `str` | `"🗓"`                              |
 | `marker.lang`      | Emoji marker for news language                   | No      | `str` | `"🌏"`                              |
+| `marker.keywords`  | Emoji marker for news keywords                   | No      | `str` | `"🏷"`                              |
+| `marker.type`      | Emoji marker for news type                       | No      | `str` | `"🔖"`                              |
 | `marker.category`  | Emoji marker for news category                   | No      | `str` | `"🗂"`                              |
 | `marker.include`   | Emoji marker for news included in digest         | No      | `str` | `"✅"`                              |
 | `marker.exclude`   | Emoji marker for news excluded from digest       | No      | `str` | `"⛔️"`                             |

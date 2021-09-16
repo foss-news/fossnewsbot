@@ -86,8 +86,7 @@ def _ternary(question: str, cmd: Command, news_id: int) -> InlineKeyboardMarkup:
     return kbd
 
 
-def _from_dict(question: str, cmd: Command, news_id: int, values: dict, lang: str = 'en',
-               columns: int = 3) -> InlineKeyboardMarkup:
+def _from_dict(question: str, cmd: Command, news_id: int, values: dict, lang: str = 'en', columns: int = 3) -> InlineKeyboardMarkup:
     kbd = InlineKeyboardMarkup()
     kbd.row(btn_question(question, news_id))
     kbd.row(InlineKeyboardButton(text=_('Keep'), callback_data=to_callback_data(cmd, news_id, Result.KEEP)))
