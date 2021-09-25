@@ -9,6 +9,8 @@ services:
       FOSSNEWSBOT_ENV: production
     hostname: fossnewsbot
     restart: unless-stopped
+    ports:
+      - "3000:3000"
   fossnewsbot-dev:
     image: "fossnewsbot-dev:latest"
     build:
@@ -17,3 +19,5 @@ services:
     environment:
       FOSSNEWSBOT_ENV: development
     hostname: fossnewsbot
+    ports:
+      - "3000:3000"
