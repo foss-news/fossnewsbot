@@ -24,7 +24,7 @@ import sys
 from aiogram import executor
 from requests import RequestException
 
-from . import log, fngs, dispatcher, handlers
+from . import log, fngs, dispatcher, bot
 from .config import config
 
 
@@ -37,6 +37,25 @@ LOG_LEVELS = dict(
     critical=logging.CRITICAL,
 )
 
+WEBHOOK_HOST = "https://fn.permlug.org"
+WEBHOOK_PATH = "/webhook/"
+WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
+
+WEBAPP_HOST = "127.0.0.1"
+WEBAPP_PORT = 3000
+
+
+async def on_startup():
+    await bot.set_webhook(WEBHOOK_URL)
+
+
+# Run before shutdown
+async def on_shutdown(dp):
+    logging.warning("Shutting down..")
+    await bot.delete_webhook()
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    logging.warning("Bot down")
 
 if __name__ == '__main__':
     logging.basicConfig(
@@ -53,4 +72,14 @@ if __name__ == '__main__':
     if config.env != 'production':
         random.seed()
 
-    executor.start_polling(dispatcher, timeout=60, skip_updates=True)
+    # executor.start_polling(dispatcher, timeout=60, skip_updates=True)
+    executor.start_webhook(
+        dispatcher=dispatcher,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+        )
+
