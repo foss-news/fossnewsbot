@@ -1,4 +1,4 @@
-"""Message handlers for FOSS News Telegram Bot"""
+"""FOSS News Telegram Bot message handlers"""
 
 #  Copyright (C) 2021 PermLUG
 #
@@ -21,16 +21,16 @@ import re
 from datetime import datetime
 from typing import Union
 
-from aiogram import md
+from aiogram import Dispatcher, md
 from aiogram.types import CallbackQuery, Message
 from aiogram.utils.exceptions import CantParseEntities, InvalidQueryID
 from requests import RequestException
 
-from . import log, bot, dispatcher, fngs, keyboards
+from . import keyboards, log
+from .core import bot, dispatcher, fngs
 from .config import config
-from .i18n import get_language, set_language
+from .i18n import set_language
 from .keyboards import Command, Result
-from .tg_user import get_username
 
 
 DIGEST_STATE = {
@@ -46,7 +46,8 @@ def format_lang(lang: str) -> str:
 
 
 def format_news(news: dict) -> str:
-    dt = datetime.strptime(news['dt'], '%Y-%m-%dT%H:%M:%S%z').strftime('%x')
+    dt = news['dt'] if news['dt'] else news['gather_dt']
+    dt = datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S%z').strftime('%x')
     lang = format_lang(news['language'])
     keywords = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic']])
     lines = [
@@ -135,9 +136,8 @@ async def error(callback: CallbackQuery) -> None:
 
 @dispatcher.message_handler(commands=['start'])
 async def start(message: Message) -> None:
-    user = message.from_user
-    set_language(get_language(user))
-    fngs.register_user(user)
+    user = fngs.fetch_user(message.from_user)
+    set_language(user.lang)
     await message.answer(md.escape_md(_(
         "Hi! I'm FOSS News Bot!\n"
         "I can send you news articles so you can help to categorize them for a new digest."
@@ -146,24 +146,26 @@ async def start(message: Message) -> None:
 
 @dispatcher.message_handler(commands=['next'])
 async def next_news(message: Message) -> None:
-    set_language(get_language(message.from_user))
+    user = fngs.fetch_user(message.from_user)
+    set_language(user.lang)
     await msg_next(message)
 
 
 @dispatcher.message_handler(commands=['add'])
 async def add(message: Message) -> None:
-    set_language(get_language(message.from_user))
+    user = fngs.fetch_user(message.from_user)
+    set_language(user.lang)
     await not_implemented('add', message)
 
 
 @dispatcher.callback_query_handler()
 async def handler(callback: CallbackQuery) -> None:
-    user = callback.from_user
-    lang = get_language(user)
+    user = fngs.fetch_user(callback.from_user)
     text = callback.message.md_text
+    markup = callback.message.reply_markup
     no_preview = False
 
-    set_language(lang)
+    set_language(user.lang)
 
     try:
         cmd, news_id, result, value = keyboards.from_callback_data(callback.data)
@@ -172,8 +174,7 @@ async def handler(callback: CallbackQuery) -> None:
             return
 
         elif cmd == Command.QUESTION:
-            log.info("%s (%i) pressed question button '%s' for news_id=%i",
-                     get_username(user), user.id, value, news_id)
+            log.info("%s pressed question button '%s' for news_id=%i", user, value, news_id)
             await callback.answer(value)
             return
 
@@ -181,7 +182,10 @@ async def handler(callback: CallbackQuery) -> None:
             attempt_id = fngs.send_attempt(user, news_id, DIGEST_STATE.get(result, 'UNKNOWN'))
             if result == Result.YES:
                 text += append_result(config.marker.include, _('In digest'))
-                markup = keyboards.is_main(attempt_id) if config.features.is_main else keyboards.next_news()
+                if config.features.is_main:
+                    markup = keyboards.is_main(attempt_id)
+                else:
+                    keyboards.next_news()
             else:
                 if result == result.NO:
                     text += append_result(config.marker.exclude, _('Not in digest'))
@@ -196,26 +200,26 @@ async def handler(callback: CallbackQuery) -> None:
                 text += append_result(config.marker.is_main, _('Main'))
             else:
                 text += append_result(config.marker.short, _('Short'))
-            if config.features.types:
-                markup = keyboards.types(news_id, fngs.types, lang)
+            if config.features.types or user.is_editor():
+                markup = keyboards.types(news_id, fngs.types, user.lang)
             else:
                 markup = keyboards.next_news()
 
         elif cmd == Command.TYPE:
             if result == Result.SET:
                 fngs.update_attempt(user, news_id, 'category', value)
-                text = update_text_attr(text, config.marker.type, fngs.types[value][lang])
+                text = update_text_attr(text, config.marker.type, fngs.types[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.type)
-            if config.features.categories:
-                markup = keyboards.categories(news_id, fngs.categories, lang)
+            if config.features.categories or user.is_editor():
+                markup = keyboards.categories(news_id, fngs.categories, user.lang)
             else:
                 markup = keyboards.next_news()
 
         elif cmd == Command.CATEGORY:
             if result == Result.SET:
                 fngs.update_attempt(user, news_id, 'subcategory', value)
-                text = update_text_attr(text, config.marker.category, fngs.categories[value][lang])
+                text = update_text_attr(text, config.marker.category, fngs.categories[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.category)
             markup = keyboards.next_news()
@@ -225,7 +229,7 @@ async def handler(callback: CallbackQuery) -> None:
             return
 
     except (CantParseEntities, InvalidQueryID) as e:
-        log.error(e)  # TODO: make a better handling of a such kind of exceptions
+        log.error(e)  # TODO: implement a better handling of a such kind of exceptions
 
     except RequestException as e:
         r = e.response
@@ -240,3 +244,16 @@ async def handler(callback: CallbackQuery) -> None:
         await callback.message.edit_text(text=text, disable_web_page_preview=no_preview)
         await callback.message.edit_reply_markup(markup)
         await callback.answer()
+
+
+async def on_startup(dp: Dispatcher):
+    log.info('Starting up...')
+    await bot.set_webhook(config.webhook.base + config.webhook.path)
+
+
+async def on_shutdown(dp: Dispatcher):
+    log.info('Shutting down...')
+    await bot.delete_webhook()
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    log.info('Bye!')

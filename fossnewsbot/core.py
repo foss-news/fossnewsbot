@@ -1,4 +1,4 @@
-"""Telegram user utilities for FOSS News Telegram Bot"""
+"""FOSS News Telegram Bot core definitions"""
 
 #  Copyright (C) 2021 PermLUG
 #
@@ -17,16 +17,13 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from aiogram.types import User
+from aiogram import Bot, Dispatcher
+from aiogram.types import ParseMode
+
+from .config import config
+from .fngs import FNGS
 
 
-def get_username(user: User) -> str:
-    """Get correct Telegram username"""
-    if user.username:
-        username = user.username
-    else:
-        username = user.first_name
-        if user.last_name:
-            username += ' ' + user.last_name
-
-    return username
+bot = Bot(token=config.bot.token, parse_mode=ParseMode.MARKDOWN_V2)
+dispatcher = Dispatcher(bot)
+fngs = FNGS(config.fngs.endpoint, config.fngs.username, config.fngs.password)

@@ -5,19 +5,19 @@ services:
     build:
       context: .
     container_name: fossnewsbot
+    hostname: fossnewsbot
+    ports:
+    - "3000:3000"
     environment:
       FOSSNEWSBOT_ENV: production
-    hostname: fossnewsbot
     restart: unless-stopped
-    ports:
-      - "3000:3000"
   fossnewsbot-dev:
     image: "fossnewsbot-dev:latest"
     build:
       context: .
     container_name: fossnewsbot-dev
-    environment:
-      FOSSNEWSBOT_ENV: development
     hostname: fossnewsbot
     ports:
-      - "3000:3000"
+    - "3000:3000"
+    environment:
+      FOSSNEWSBOT_ENV: development
