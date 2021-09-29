@@ -42,7 +42,7 @@ from .i18n import LANGUAGES
 # Default values
 DEFAULT_TIMEOUT = 5  # seconds
 DEFAULT_RETRIES = 3
-DEFAULT_ROLE = 'user'
+DEFAULT_GROUPS = ['user']
 
 # News types and categories
 # TODO: remove test data
@@ -126,7 +126,7 @@ class BotUser:
         if self.lang not in LANGUAGES:
             self.lang = 'en'
 
-        self.role = None
+        self.groups = None
 
     def __str__(self) -> str:
         _id = str(self.tid)
@@ -135,10 +135,10 @@ class BotUser:
         return f'{self.name} ({_id})'
 
     def is_admin(self) -> bool:
-        return self.role == 'admin'
+        return 'admin' in self.groups
 
     def is_editor(self) -> bool:
-        return self.role in ['editor', 'admin']
+        return 'editor' in self.groups
 
 
 class cached_user_method:
@@ -259,7 +259,7 @@ class FNGS:
 
         user = BotUser(user)
         user.id = user_info['id']
-        user.role = user_info.get('role', DEFAULT_ROLE)
+        user.groups = user_info.get('groups', DEFAULT_GROUPS)
         log.info("%s fetched id", user)
 
         return user
