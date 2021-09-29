@@ -19,38 +19,32 @@ This module implements FOSS News Gathering Server API calls for FOSS News Telegr
 #
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-#  This file is part of fossnewsbot, FOSS News Telegram Bot.
-#
-#  fossnewsbot is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU Affero General Public License as
-#  published by the Free Software Foundation, either version 3 of the
-#  License, or (at your option) any later version.
-#
-#  fossnewsbot is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU Affero General Public License for more details.
-#
-#  You should have received a copy of the GNU Affero General Public License
-#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from functools import lru_cache
+from functools import wraps
 from json import JSONDecodeError
 from logging import getLogger
 from random import randint
-from typing import Optional, Tuple, Union
+from typing import Any, Callable, Optional, Union
 from urllib.parse import urlencode
 
-import requests
 from aiogram.types import User
+from requests import HTTPError, Response
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+from requests_toolbelt.sessions import BaseUrlSession
 
-from cache import CachedProperty
+from cache import LRUCacheTTL, cached_property_with_ttl
 from .config import config
-from .tg_user import get_username
+from .i18n import LANGUAGES
 
 
+# Default values
+DEFAULT_TIMEOUT = 5  # seconds
+DEFAULT_RETRIES = 3
+DEFAULT_ROLE = 'user'
+
+# News types and categories
 # TODO: remove test data
 TEST_TYPES = dict(
     NEWS=dict(en='News', ru='Новости'),
@@ -87,42 +81,137 @@ TEST_CATEGORIES = dict(
     MISC=dict(en='Misc', ru='Разное'),
 )
 
-log = getLogger('fngs')
+# Logger
+log = getLogger(__name__.split('.')[-1])
 
 
-class Fngs:
-    def __init__(self, endpoint: str, username: str, password: str):
+class TimeoutHTTPAdapter(HTTPAdapter):
+    """HTTP adapter with timeout and retries"""
+
+    def __init__(self, *args, **kwargs):
+        self.timeout = DEFAULT_TIMEOUT
+        if 'timeout' in kwargs:
+            self.timeout = kwargs['timeout']
+            del kwargs['timeout']
+        kwargs['max_retries'] = Retry(
+            backoff_factor=1,
+            total=kwargs.get('max_retries', DEFAULT_RETRIES),
+            status_forcelist=[429, 500, 502, 503, 504],
+            method_whitelist=['OPTIONS', 'HEAD', 'GET'],
+        )
+        super().__init__(*args, **kwargs)
+
+    def send(self, request, **kwargs):
+        timeout = kwargs.get('timeout')
+        if timeout is None:
+            kwargs['timeout'] = self.timeout
+        return super().send(request, **kwargs)
+
+
+class BotUser:
+    """FOSS News Telegram Bot user"""
+
+    def __init__(self, user: User) -> None:
+        self.id = None
+        self.tid = user.id
+
+        if user.username:
+            self.name = user.username
+        else:
+            self.name = user.first_name
+            if user.last_name:
+                self.name += ' ' + user.last_name
+
+        self.lang = user.locale.language
+        if self.lang not in LANGUAGES:
+            self.lang = 'en'
+
+        self.role = None
+
+    def __str__(self) -> str:
+        _id = str(self.tid)
+        if self.id:
+            _id += '|' + str(self.id)
+        return f'{self.name} ({_id})'
+
+    def is_admin(self) -> bool:
+        return self.role == 'admin'
+
+    def is_editor(self) -> bool:
+        return self.role in ['editor', 'admin']
+
+
+class cached_user_method:
+    """Users caching decorator"""
+
+    def __init__(self, maxsize: int = 128, days: float = 0, seconds: float = 0, microseconds: float = 0,
+                 milliseconds: float = 0, minutes: float = 0, hours: float = 0, weeks: float = 0) -> None:
+        self.cache = LRUCacheTTL(maxsize=maxsize, days=days, seconds=seconds, microseconds=microseconds,
+                                 milliseconds=milliseconds, minutes=minutes, hours=hours, weeks=weeks)
+
+    def __call__(self, fetch: Callable[[Any, User], BotUser]) -> Callable[[Any, User], BotUser]:
+        @wraps(fetch)
+        def wrapper(obj: Any, user: User) -> BotUser:
+            try:
+                return self.cache[user.id]
+            except KeyError:
+                pass
+
+            value = fetch(obj, user)
+            self.cache[user.id] = value
+
+            return value
+
+        wrapper.cache_info = self.cache.info
+
+        return wrapper
+
+
+class FNGS:
+    """FOSS News Gathering Server API"""
+
+    def __init__(self, endpoint: str, username: str, password: str,
+                 timeout: int = DEFAULT_TIMEOUT, max_retries: int = DEFAULT_RETRIES):
         self._endpoint = endpoint
         self._auth = dict(username=username, password=password)
+        self._headers = {}
+        self._http = BaseUrlSession(endpoint)
+        self._adapter = TimeoutHTTPAdapter(timeout=timeout, max_retries=max_retries)
+        self._http.mount('https://', self._adapter)
+        self._http.mount('http://', self._adapter)
 
-    @CachedProperty(days=config.cache.token.ttl)
+    @cached_property_with_ttl(days=config.cache.token.ttl)
     def token(self):
         """Fetch FNGS token"""
-        t = requests.post(self._endpoint + 'token/', data=self._auth).json()['access']
+        t = self._http.post('token/', data=self._auth).json()['access']
         log.info('fetched token')
         return t
 
-    def _request(self, endpoint: str, method: str, query: dict = None, data: dict = None) -> Optional[requests.Response]:
-        url, response = f'{self._endpoint}{endpoint}/', None
-        headers = dict(Authorization=f'Bearer {self.token}')
+    @property
+    def headers(self) -> dict:
+        self._headers['Authorization'] = f'Bearer {self.token}'
+        return self._headers
+
+    def _request(self, endpoint: str, method: str, query: dict = None, data: dict = None) -> Optional[Response]:
+        url, response = f'{endpoint}/', None
 
         if query:
             url += '?' + urlencode(query, doseq=True)
         log.debug('request: %s %s data=%s', method.upper(), url, data)
 
         if method == 'get':
-            response = requests.get(url, headers=headers)
+            response = self._http.get(url, headers=self.headers)
         elif method == 'post':
-            response = requests.post(url, headers=headers, data=data)
+            response = self._http.post(url, headers=self.headers, data=data)
         elif method == 'patch':
-            response = requests.patch(url, headers=headers, data=data)
+            response = self._http.patch(url, headers=self.headers, data=data)
 
         if response is not None:
             response.raise_for_status()
 
         return response
 
-    @CachedProperty(days=config.cache.attrs.ttl)
+    @cached_property_with_ttl(days=config.cache.attrs.ttl)
     def types(self) -> dict:
         """Fetch types of news"""
         # TODO: replace test types data with a real request
@@ -131,7 +220,7 @@ class Fngs:
         log.info('fetched news types')
         return t
 
-    @CachedProperty(days=config.cache.attrs.ttl)
+    @cached_property_with_ttl(days=config.cache.attrs.ttl)
     def categories(self) -> dict:
         """Fetch categories of news"""
         # TODO: replace test categories data with a real request
@@ -142,80 +231,96 @@ class Fngs:
 
     def register_user(self, user: User) -> Optional[int]:
         """Register Telegram user on FNGS server"""
-        tid, username = user.id, get_username(user)
-
+        user = BotUser(user)
         try:
-            user_id = self._request('telegram-bot-user', 'post', data=dict(tid=tid, username=username)).json()['id']
-            log.info("%s (%i|%i) registered successfully", username, tid, user_id)
-            return user_id
-        except requests.HTTPError as e:
+            user.id = self._request('telegram-bot-user', 'post',
+                                    data=dict(tid=user.tid, username=user.name)).json()['id']
+            log.info("%s registered successfully", user)
+            return user.id
+        except HTTPError as e:
             r = e.response
-            if r.status_code == 400:
-                log.warning("%s (%i) already registered: %s", username, tid, r.json()['tid'][0])
+            if r.status_code == 400:  # TODO: make error code more specific
+                log.warning("%s already registered: %s", user, r.json()['tid'][0])
                 return None
             else:
                 raise e
 
-    @lru_cache(maxsize=config.cache.users.size)
-    def fetch_user(self, user: User) -> Tuple[str, int, int]:
-        """Fetch FNGS id of Telegram user"""
-        tid, username = user.id, get_username(user)
+    @cached_user_method(days=config.cache.users.ttl, maxsize=config.cache.users.size)
+    def fetch_user(self, user: User) -> BotUser:
+        """Fetch FNGS id and info for Telegram user"""
+        def _fetch(tid: int) -> Any:
+            return self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()
 
         try:
-            user_id = self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()['id']
-        except (requests.HTTPError, JSONDecodeError, KeyError):
-            user_id = self.register_user(user)
-        log.info("%s (%i|%i) fetched id", username, tid, user_id)
+            user_info = _fetch(user.id)
+        except (HTTPError, JSONDecodeError):
+            self.register_user(user)
+            user_info = _fetch(user.id)
 
-        return username, tid, user_id
+        user = BotUser(user)
+        user.id = user_info['id']
+        user.role = user_info.get('role', DEFAULT_ROLE)
+        log.info("%s fetched id", user)
 
-    def fetch_news(self, user: User) -> dict:
+        return user
+
+    def update_user_news_lang(self, user: Union[User, BotUser], lang: str) -> None:
+        if isinstance(user, User):
+            user = self.fetch_user(user)
+        raise NotImplementedError('implement `news_lang` field in `telegram-bot-user` model')
+        # self._request('telegram-bot-user', 'patch', data=dict(id=user.id, news_lang=lang))
+
+    def fetch_news(self, user: Union[User, BotUser]) -> dict:
         """Fetch next random uncategorized news for this user"""
-        username, tid, user_id = self.fetch_user(user)
+        if isinstance(user, User):
+            user = self.fetch_user(user)
 
         try:
             news = self._request('telegram-bot-one-random-not-categorized-foss-news-digest-record', 'get',
-                                 query={'tbot-user-id': user_id}).json()[0]
-            log.info("%s (%i|%i) fetched news %i \"%s\"", username, tid, user_id, news['id'], news['title'])
+                                 query={'tbot-user-id': user.id}).json()[0]
+            log.info("%s fetched news: %i \"%s\"", user, news['id'], news['title'])
         except (JSONDecodeError, IndexError):
             news = {}
-            log.warning("%s (%i|%i) got no news", username, tid, user_id)
+            log.warning("%s fetched no news", user)
 
         return news
 
-    def fetch_news_count(self, user: User) -> int:
+    def fetch_news_count(self, user: Union[User, BotUser]) -> int:
         """Fetch count of uncategorized news for this user"""
-        username, tid, user_id = self.fetch_user(user)
+        if isinstance(user, User):
+            user = self.fetch_user(user)
 
         count = self._request('telegram-bot-not-categorized-foss-news-digest-records-count', 'get',
-                              query={'tbot-user-id': user_id}).json()['count']
-        log.info("%s (%i|%i) fetched news count %i", username, tid, user_id, count)
+                              query={'tbot-user-id': user.id}).json()['count']
+        log.info("%s fetched news count: %i", user, count)
 
         return count
 
-    def send_attempt(self, user: User, news_id: int, state: str = None) -> int:
+    def send_attempt(self, user: Union[User, BotUser], news_id: int, state: str = None) -> int:
         """Send categorization attempt of this user"""
-        username, tid, user_id = self.fetch_user(user)
+        if isinstance(user, User):
+            user = self.fetch_user(user)
 
         if config.env == 'production':
             r = self._request('telegram-bot-digest-record-categorization-attempt', 'post', data=dict(
                 dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S%z'),
-                telegram_bot_user=user_id,
+                telegram_bot_user=user.id,
                 digest_record=news_id,
                 estimated_state=state,
             ))
             attempt_id = r.json()['id']
         else:
             attempt_id = randint(0, 255)
-        log.info("%s (%i|%i) sent attempt %i news=%i state=%s", username, tid, user_id, attempt_id, news_id, state)
+        log.info("%s sent attempt: %i news=%i state=%s", user, attempt_id, news_id, state)
 
         return attempt_id
 
-    def update_attempt(self, user: User, attempt_id: int, field: str, value: Union[bool, int, str]) -> None:
+    def update_attempt(self, user: Union[User, BotUser], attempt_id: int, field: str, value: Union[bool, int, str]) -> None:
         """Update categorization attempt of this user"""
-        username, tid, user_id = self.fetch_user(user)
+        if isinstance(user, User):
+            user = self.fetch_user(user)
 
         if config.env == 'production':
             self._request('telegram-bot-digest-record-categorization-attempt', 'patch',
                           data={'id': attempt_id, field: value})
-        log.info("%s (%i|%i) updated attempt %i %s=%s", username, tid, user_id, attempt_id, field, value)
+        log.info("%s updated attempt: %i %s=%s", user, attempt_id, field, value)

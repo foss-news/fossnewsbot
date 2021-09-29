@@ -1,11 +1,21 @@
 default:
   localedir: locales
+  bot:
+    host: "127.0.0.1"
+    port: 3000
+  fngs:
+    endpoint: "https://fn.permlug.org/api/v1/"
+    timeout: 5
+    retries: 3
   url:
     channel: "https://t.me/permlug"
     chat: "https://t.me/permlug_chat"
   cache:
     token:
       ttl: 29 # days
+    users:
+      size: 256
+      ttl: 1
   marker:
     count: "📊"
     date: "🗓"
@@ -24,28 +34,34 @@ default:
 development:
   log:
     level: info
-  fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
+    dynaconf_merge: true
+  webhook:
+    base: "https://fn.permlug.org"
+    path: "/bot-dev/"
+    dynaconf_merge: true
   cache:
     attrs:
-      ttl: 0 # days; 0 — no TTL, do not refresh
-    users:
-      size: null
+      ttl: 0
+    dynaconf_merge: true
   features:
     is_main: true
     types: true
     categories: true
+    dynaconf_merge: true
 production:
   log:
     level: warn
-  fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
+    dynaconf_merge: true
+  webhook:
+    base: "https://fn.permlug.org"
+    path: "/bot/"
+    dynaconf_merge: true
   cache:
     attrs:
-      ttl: 1 # days; 0 — no TTL, do not refresh
-    users:
-      size: 256
+      ttl: 1
+    dynaconf_merge: true
   features:
     is_main: false
     types: false
     categories: false
+    dynaconf_merge: true

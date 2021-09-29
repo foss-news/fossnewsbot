@@ -20,49 +20,49 @@ msgstr ""
 "X-Poedit-Basepath: ../fossnewsbot\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: handlers.py:44
+#: __main__.py:55
 msgid "English"
 msgstr ""
 
-#: handlers.py:44
+#: __main__.py:55
 msgid "Russian"
 msgstr ""
 
-#: handlers.py:45 handlers.py:61 handlers.py:64
+#: __main__.py:56 __main__.py:73 __main__.py:76
 msgid "Unknown"
 msgstr ""
 
-#: handlers.py:53
+#: __main__.py:65
 msgid "News left"
 msgstr ""
 
-#: handlers.py:55
+#: __main__.py:67
 msgid "Date"
 msgstr ""
 
-#: handlers.py:56
+#: __main__.py:68
 msgid "Language"
 msgstr ""
 
-#: handlers.py:59
+#: __main__.py:71
 msgid "Keywords"
 msgstr ""
 
-#: handlers.py:62
+#: __main__.py:74
 msgid "Type"
 msgstr ""
 
-#: handlers.py:65
+#: __main__.py:77
 msgid "Category"
 msgstr ""
 
-#: handlers.py:103
+#: __main__.py:115
 msgid ""
 "No news yet.\n"
 "Please, try again later."
 msgstr ""
 
-#: handlers.py:113
+#: __main__.py:125
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -70,49 +70,49 @@ msgid ""
 "Please, check {channel} and {chat} for updates\\."
 msgstr ""
 
-#: handlers.py:118
+#: __main__.py:130
 msgid "channel"
 msgstr ""
 
-#: handlers.py:119
+#: __main__.py:131
 msgid "chat"
 msgstr ""
 
-#: handlers.py:126
+#: __main__.py:138
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 msgstr ""
 
-#: handlers.py:129 keyboards.py:104
+#: __main__.py:141 keyboards.py:103
 msgid "Next"
 msgstr ""
 
-#: handlers.py:142
+#: __main__.py:153
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 msgstr ""
 
-#: handlers.py:183
+#: __main__.py:194
 msgid "In digest"
 msgstr ""
 
-#: handlers.py:187
+#: __main__.py:201
 msgid "Not in digest"
 msgstr ""
 
-#: handlers.py:189
+#: __main__.py:203
 msgid "Skip"
 msgstr ""
 
-#: handlers.py:196
+#: __main__.py:210
 msgid "Main"
 msgstr ""
 
-#: handlers.py:198
+#: __main__.py:212
 msgid "Short"
 msgstr ""
 
@@ -128,22 +128,22 @@ msgstr ""
 msgid "Don't know"
 msgstr ""
 
-#: keyboards.py:93
+#: keyboards.py:92
 msgid "Keep"
 msgstr ""
 
-#: keyboards.py:111
+#: keyboards.py:110
 msgid "Include in digest?"
 msgstr ""
 
-#: keyboards.py:115
+#: keyboards.py:114
 msgid "Include in main news?"
 msgstr ""
 
-#: keyboards.py:119
+#: keyboards.py:118
 msgid "Choose type"
 msgstr ""
 
-#: keyboards.py:123
+#: keyboards.py:122
 msgid "Choose category"
 msgstr ""
