@@ -1,8 +1,7 @@
 import http from 'k6/http';
 import {Rate, Trend, Counter} from 'k6/metrics';
-import {login, password} from './secrets.js';
+import {LOGIN, PASSWORD, TBOT_USER_ID, API_BASE_URL} from './secrets.js';
 
-const API_BASE_URL = 'https://fn.permlug.org/api/v1';
 const TEST_DURATION_SECONDS = 60;
 const ITERATIONS_PER_SECOND = 1;
 
@@ -12,17 +11,13 @@ let requestsCounter = new Counter('Requests Counter');
 
 export let options = {
     scenarios: {
-        // To make some advanced options available we need to make more complicated
-        // options structure
         example_scenario: {
-            // Constant rate, not VUs (see docs https://k6.io/docs/using-k6/scenarios/executors/)
             executor: 'constant-arrival-rate',
-            // TODO: Calculate needed threads count
+            // TODO: Calculate really needed threads count
             preAllocatedVUs: 10,
             maxVUs: 10,
             rate: ITERATIONS_PER_SECOND,
             timeUnit: '1s',
-            // We still don't want to wait much
             duration: `${TEST_DURATION_SECONDS}s`,
             gracefulStop: '2s',
         }
@@ -49,8 +44,8 @@ export let options = {
 
 export function setup() {
     const authRequestData = {
-        'username': login,
-        'password': password,
+        'username': LOGIN,
+        'password': PASSWORD,
     };
     const authRequestDataJson = JSON.stringify(authRequestData);
     const authRequestHeaders = {
@@ -70,14 +65,24 @@ export default function(data) {
     const authHeaders = {
         Authorization: `Bearer ${authToken}`,
     };
-    const randomDigestRecordUrl = `${API_BASE_URL}/telegram-bot-one-random-not-categorized-foss-news-digest-record`;
-    const randomDigestRecordResponse = http.get(randomDigestRecordUrl, {headers: authHeaders}, {tags: {type: 'randomRecord'}});
-    successRate.add(randomDigestRecordResponse.status === 200, {type: 'randomRecord'});
-    durationTrend.add(randomDigestRecordResponse.timings.duration, {type: 'randomRecord'});
-    requestsCounter.add(1, {type: 'randomRecord'});
-    const digestRecordsCountUrl = `${API_BASE_URL}/telegram-bot-not-categorized-foss-news-digest-records-count`;
-    const digestRecordsCountResponse = http.get(randomDigestRecordUrl, {headers: authHeaders}, {tags: {type: 'recordsCount'}});
-    successRate.add(digestRecordsCountResponse.status === 200, {type: 'recordsCount'});
-    durationTrend.add(digestRecordsCountResponse.timings.duration, {type: 'recordsCount'});
-    requestsCounter.add(1, {type: 'recordsCount'});
+    const testStepsData = [
+        {
+            url: `${API_BASE_URL}/telegram-bot-one-random-not-categorized-foss-news-digest-record?tbot-user-id=${TBOT_USER_ID}`,
+            tag: 'randomRecord',
+        },
+        {
+            url: `${API_BASE_URL}/telegram-bot-not-categorized-foss-news-digest-records-count?tbot-user-id=${TBOT_USER_ID}`,
+            tag: 'recordsCount',
+        }
+    ];
+    for (let testStepData of testStepsData) {
+        const response = http.get(testStepData.url, {headers: authHeaders}, {tags: {type: testStepData.tag}});
+        successRate.add(response.status === 200, {type: testStepData.tag});
+        if (response.status !== 200) {
+            console.error(`${testStepData.tag} error: ${response.body}`);
+        }
+        durationTrend.add(response.timings.duration, {type: testStepData.tag});
+        requestsCounter.add(1, {type: testStepData.tag});
+        console.debug(`${testStepData.tag} response: ${response.body}`);
+    }
 }
