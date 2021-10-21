@@ -46,8 +46,8 @@ to handle configuration files and environment variables.
 | `marker.date`      | Emoji marker for news date and time                  | No      | `str` | `"🗓"`                              |
 | `marker.lang`      | Emoji marker for news language                       | No      | `str` | `"🌏"`                              |
 | `marker.keywords`  | Emoji marker for news keywords                       | No      | `str` | `"🏷"`                              |
-| `marker.type`      | Emoji marker for news type                           | No      | `str` | `"🔖"`                              |
-| `marker.category`  | Emoji marker for news category                       | No      | `str` | `"🗂"`                              |
+| `marker.content_type` | Emoji marker for news type                        | No      | `str` | `"🔖"`                              |
+| `marker.content_category` | Emoji marker for news category                | No      | `str` | `"🗂"`                              |
 | `marker.include`   | Emoji marker for news included in digest             | No      | `str` | `"✅"`                              |
 | `marker.exclude`   | Emoji marker for news excluded from digest           | No      | `str` | `"⛔️"`                             |
 | `marker.unknown`   | Emoji marker for skipped news                        | No      | `str` | `"🤷🏻‍♂️"`                            |

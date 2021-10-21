@@ -59,11 +59,11 @@ def format_news(news: dict) -> str:
     if keywords:
         lines.append(md.text(config.marker.keywords + ' ', md.italic(_('Keywords')), md.escape_md(': '), keywords, sep=''),)
     if config.features.types:
-        type_ = news['category'] if news['category'] else _('Unknown')
-        lines.append(md.text(config.marker.type + ' ', md.italic(_('Type')), md.escape_md(':', type_), sep=''))
+        content_type = news['content_type'] if news['content_type'] else _('Unknown')
+        lines.append(md.text(config.marker.type + ' ', md.italic(_('Type')), md.escape_md(':', content_type), sep=''))
     if config.features.categories:
-        category = news['subcategory'] if news['subcategory'] else _('Unknown')
-        lines.append(md.text(config.marker.category + ' ', md.italic(_('Category')), md.escape_md(':', category), sep=''))
+        content_category = news['content_category'] if news['content_category'] else _('Unknown')
+        lines.append(md.text(config.marker.content_category + ' ', md.italic(_('Category')), md.escape_md(':', content_category), sep=''))
     return md.text(*lines, sep='\n')
 
 
@@ -205,9 +205,9 @@ async def handler(callback: CallbackQuery) -> None:
             else:
                 markup = keyboards.next_news()
 
-        elif cmd == Command.TYPE:
+        elif cmd == Command.CONTENT_TYPE:
             if result == Result.SET:
-                fngs.update_attempt(user, news_id, 'category', value)
+                fngs.update_attempt(user, news_id, 'content_type', value)
                 text = update_text_attr(text, config.marker.type, fngs.types[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.type)
@@ -216,12 +216,12 @@ async def handler(callback: CallbackQuery) -> None:
             else:
                 markup = keyboards.next_news()
 
-        elif cmd == Command.CATEGORY:
+        elif cmd == Command.CONTENT_CATEGORY:
             if result == Result.SET:
-                fngs.update_attempt(user, news_id, 'subcategory', value)
-                text = update_text_attr(text, config.marker.category, fngs.categories[value][user.lang])
+                fngs.update_attempt(user, news_id, 'content_category', value)
+                text = update_text_attr(text, config.marker.content_type, fngs.categories[value][user.lang])
             else:
-                text = update_text_attr(text, config.marker.category)
+                text = update_text_attr(text, config.marker.content_type)
             markup = keyboards.next_news()
 
         else:

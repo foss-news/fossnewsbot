@@ -31,8 +31,8 @@ class Command(Enum):
     NEXT = 'next'
     INCLUDE = 'include'
     IS_MAIN = 'is_main'
-    TYPE = 'type'
-    CATEGORY = 'category'
+    CONTENT_TYPE = 'content_type'
+    CONTENT_CATEGORY = 'content_category'
 
 
 @unique
@@ -115,8 +115,8 @@ def is_main(news_id: int) -> InlineKeyboardMarkup:
 
 
 def types(news_id: int, types_: dict, lang: str = 'en') -> InlineKeyboardMarkup:
-    return _from_dict(_('Choose type'), Command.TYPE, news_id, types_, lang, config.keyboard.columns)
+    return _from_dict(_('Choose type'), Command.CONTENT_TYPE, news_id, types_, lang, config.keyboard.columns)
 
 
 def categories(news_id: int, categories_: dict, lang: str = 'en') -> InlineKeyboardMarkup:
-    return _from_dict(_('Choose category'), Command.CATEGORY, news_id, categories_, lang, config.keyboard.columns)
+    return _from_dict(_('Choose category'), Command.CONTENT_CATEGORY, news_id, categories_, lang, config.keyboard.columns)
