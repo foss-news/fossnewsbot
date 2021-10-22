@@ -36,7 +36,7 @@ development:
     level: info
     dynaconf_merge: true
   webhook:
-    base: "https://fn.permlug.org"
+    base: "https://fn-dev.permlug.org"
     path: "/bot-dev/"
     dynaconf_merge: true
   cache:
