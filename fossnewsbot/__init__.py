@@ -25,4 +25,4 @@ from logging import getLogger
 
 __version__ = '1.0.0'
 
-log = getLogger(__name__)
+log = getLogger('bot')
