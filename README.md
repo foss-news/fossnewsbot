@@ -72,9 +72,25 @@ See secrets file template in [`.secrets.yml.dist`](.secrets.yml.dist).
 [channel]: https://t.me/permlug "PermLUG channel"
 [chat]: https://t.me/permlug_chat "PermLUG chat"
 
+### nginx Configuration for Bot Webhooks
+Put the following [location][] block in a [server][] block
+somewhere in `/etc/nginx/conf.d/*.conf` or `/etc/nginx/sites-enabled/*`:
+```
+server {
+    …
+    location = /bot/ {
+        proxy_pass http://localhost:2048;
+    }
+    …
+}
+```
+
+[location]: https://nginx.org/en/docs/http/ngx_http_core_module.html#location "location — nginx"
+[server]: https://nginx.org/en/docs/http/ngx_http_core_module.html#server "server — nginx"
+
 ## License
 [![GNU AGPLv3](https://www.gnu.org/graphics/agplv3-155x51.png "GNU AGPLv3")](COPYING "GNU AGPLv3")
 
 ## See Also
-- [Advanced usage of Python requests - timeouts, retries, hooks](https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/) by _Dani Hodovic_
-- [jlhutch/pylru — GitHub](https://github.com/jlhutch/pylru "jlhutch/pylru — GitHub")
+- [Advanced usage of Python requests - timeouts, retries, hooks](https://findwork.dev/blog/advanced-usage-python-requests-timeouts-retries-hooks/) by _Dani Hodovic_ (2020-02-28)
+- [jlhutch/pylru — GitHub](https://github.com/jlhutch/pylru "jlhutch/pylru — GitHub") — A least recently used (LRU) cache for Python
