@@ -4,7 +4,6 @@ default:
     host: "127.0.0.1"
     port: 3000
   fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
     timeout: 5
     retries: 3
   url:
@@ -32,6 +31,8 @@ default:
   keyboard:
     columns: 3
 development:
+  fngs:
+    endpoint: "https://fn-dev.permlug.org/api/v1/"
   log:
     level: info
     dynaconf_merge: true
@@ -49,6 +50,8 @@ development:
     categories: true
     dynaconf_merge: true
 production:
+  fngs:
+    endpoint: "https://fn.permlug.org/api/v1/"
   log:
     level: warn
     dynaconf_merge: true
