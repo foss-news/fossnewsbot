@@ -22,10 +22,10 @@ default:
   keyboard:
     columns: 3
 development:
+  fngs:
+    endpoint: "https://fn-dev.permlug.org/api/v1/"
   log:
     level: info
-  fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
   cache:
     attrs:
       ttl: 0 # days; 0 — no TTL, do not refresh
@@ -36,10 +36,10 @@ development:
     types: true
     categories: true
 production:
-  log:
-    level: warn
   fngs:
     endpoint: "https://fn.permlug.org/api/v1/"
+  log:
+    level: warn
   cache:
     attrs:
       ttl: 1 # days; 0 — no TTL, do not refresh
