@@ -26,4 +26,4 @@ from .fngs import FNGS
 
 bot = Bot(token=config.bot.token, parse_mode=ParseMode.MARKDOWN_V2)
 dispatcher = Dispatcher(bot)
-fngs = FNGS(config.fngs.endpoint, config.fngs.username, config.fngs.password)
+fngs = FNGS(config.fngs.endpoint, config.fngs.username, config.fngs.password, config.fngs.timeout, config.fngs.retries)
