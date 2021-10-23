@@ -7,7 +7,7 @@ services:
     container_name: fossnewsbot
     hostname: fossnewsbot
     ports:
-    - "3000:3000"
+    - "3001:3000"
     environment:
       FOSSNEWSBOT_ENV: production
     restart: unless-stopped
@@ -18,6 +18,6 @@ services:
     container_name: fossnewsbot-dev
     hostname: fossnewsbot
     ports:
-    - "3000:3000"
+    - "3002:3000"
     environment:
       FOSSNEWSBOT_ENV: development
