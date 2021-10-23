@@ -59,7 +59,7 @@ def format_news(news: dict) -> str:
         lines.append(md.text(config.marker.keywords + ' ', md.italic(_('Keywords')), md.escape_md(': '), keywords, sep=''),)
     if config.features.types:
         content_type = news['content_type'] if news['content_type'] else _('Unknown')
-        lines.append(md.text(config.marker.type + ' ', md.italic(_('Type')), md.escape_md(':', content_type), sep=''))
+        lines.append(md.text(config.marker.content_type + ' ', md.italic(_('Type')), md.escape_md(':', content_type), sep=''))
     if config.features.categories:
         content_category = news['content_category'] if news['content_category'] else _('Unknown')
         lines.append(md.text(config.marker.content_category + ' ', md.italic(_('Category')), md.escape_md(':', content_category), sep=''))
