@@ -17,6 +17,7 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import json
 import re
 from datetime import datetime
 from typing import Union
@@ -182,10 +183,10 @@ async def handler(callback: CallbackQuery) -> None:
             attempt_id = fngs.send_attempt(user, news_id, DIGEST_STATE.get(result, 'UNKNOWN'))
             if result == Result.YES:
                 text += append_result(config.marker.include, _('In digest'))
-                if config.features.is_main or user.is_admin() or user.is_editor():
+                if config.features.is_main or user.is_editor():
                     markup = keyboards.is_main(attempt_id)
                 else:
-                    keyboards.next_news()
+                    markup = keyboards.next_news()
             else:
                 if result == result.NO:
                     text += append_result(config.marker.exclude, _('Not in digest'))
@@ -200,7 +201,7 @@ async def handler(callback: CallbackQuery) -> None:
                 text += append_result(config.marker.is_main, _('Main'))
             else:
                 text += append_result(config.marker.short, _('Short'))
-            if config.features.types or user.is_admin() or user.is_editor():
+            if config.features.types or user.is_editor():
                 markup = keyboards.types(news_id, fngs.types, user.lang)
             else:
                 markup = keyboards.next_news()
@@ -211,7 +212,7 @@ async def handler(callback: CallbackQuery) -> None:
                 text = update_text_attr(text, config.marker.type, fngs.types[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.type)
-            if config.features.categories or user.is_admin() or user.is_editor():
+            if config.features.categories or user.is_editor():
                 markup = keyboards.categories(news_id, fngs.categories, user.lang)
             else:
                 markup = keyboards.next_news()

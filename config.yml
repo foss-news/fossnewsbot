@@ -1,20 +1,20 @@
 default:
-  localedir: locales
   bot:
     host: "127.0.0.1"
     port: 2048
   fngs:
     timeout: 5 # seconds
     retries: 3
-  url:
-    channel: "https://t.me/permlug"
-    chat: "https://t.me/permlug_chat"
   cache:
     token:
       ttl: 29 # days
     users:
       size: 256
       ttl: 1 # days
+  url:
+    channel: "https://t.me/permlug"
+    chat: "https://t.me/permlug_chat"
+  localedir: locales
   marker:
     count: "📊"
     date: "🗓"

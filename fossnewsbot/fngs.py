@@ -42,7 +42,7 @@ from .i18n import LANGUAGES
 # Default values
 DEFAULT_TIMEOUT = 5  # seconds
 DEFAULT_RETRIES = 3
-DEFAULT_GROUPS = ['user']
+DEFAULT_GROUPS = ['users']
 
 # News types and categories
 # TODO: remove test data
@@ -111,8 +111,8 @@ class TimeoutHTTPAdapter(HTTPAdapter):
 class BotUser:
     """FOSS News Telegram Bot user"""
 
-    def __init__(self, user: User) -> None:
-        self.id = None
+    def __init__(self, user: User, id_: int = None, groups: list = None) -> None:
+        self.id = id_
         self.tid = user.id
 
         if user.username:
@@ -126,7 +126,7 @@ class BotUser:
         if self.lang not in LANGUAGES:
             self.lang = 'en'
 
-        self.groups = None
+        self.groups = groups if groups is not None else DEFAULT_GROUPS
 
     def __str__(self) -> str:
         _id = str(self.tid)
@@ -135,10 +135,10 @@ class BotUser:
         return f'{self.name} ({_id})'
 
     def is_admin(self) -> bool:
-        return 'admin' in self.groups
+        return 'admins' in self.groups
 
     def is_editor(self) -> bool:
-        return 'editor' in self.groups
+        return 'editors' in self.groups or self.is_admin()
 
 
 class cached_user_method:
@@ -248,6 +248,7 @@ class FNGS:
     @cached_user_method(days=config.cache.users.ttl, maxsize=config.cache.users.size)
     def fetch_user(self, user: User) -> BotUser:
         """Fetch FNGS id and info for Telegram user"""
+
         def _fetch(tid: int) -> Any:
             return self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()
 
@@ -257,9 +258,11 @@ class FNGS:
             self.register_user(user)
             user_info = _fetch(user.id)
 
-        user = BotUser(user)
-        user.id = user_info['id']
-        user.groups = user_info.get('groups', DEFAULT_GROUPS)
+        try:
+            groups = [g['name'] for g in user_info['groups']]
+        except KeyError:
+            groups = None
+        user = BotUser(user, user_info['id'], groups)
         log.info("%s fetched id", user)
 
         return user
