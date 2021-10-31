@@ -1,7 +1,6 @@
 default:
   bot:
-    host: "127.0.0.1"
-    port: 2048
+    host: "0.0.0.0"
   fngs:
     timeout: 5 # seconds
     retries: 3
@@ -20,7 +19,6 @@ default:
     date: "🗓"
     lang: "🌏"
     keywords:
-      title: "🏷"
       foss: "🟢"
       proprietary: "🟡"
     content_type: "🔖"
@@ -34,19 +32,22 @@ default:
   keyboard:
     columns: 3
 development:
-  fngs:
-    endpoint: "https://fn-dev.permlug.org/api/v1/"
-    dynaconf_merge: true
-  log:
-    level: info
+  bot:
+    port: 2047
     dynaconf_merge: true
   webhook:
     base: "https://fn-dev.permlug.org"
     path: "/bot-dev/"
     dynaconf_merge: true
+  fngs:
+    endpoint: "https://fn-dev.permlug.org/api/v1/"
+    dynaconf_merge: true
   cache:
     attrs:
       ttl: 0 # days
+    dynaconf_merge: true
+  log:
+    level: info
     dynaconf_merge: true
   features:
     is_main: true
@@ -54,19 +55,22 @@ development:
     categories: true
     dynaconf_merge: true
 production:
-  fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
-    dynaconf_merge: true
-  log:
-    level: warn
+  bot:
+    port: 2048
     dynaconf_merge: true
   webhook:
     base: "https://fn.permlug.org"
     path: "/bot/"
     dynaconf_merge: true
+  fngs:
+    endpoint: "https://fn.permlug.org/api/v1/"
+    dynaconf_merge: true
   cache:
     attrs:
       ttl: 1 # days
+    dynaconf_merge: true
+  log:
+    level: warn
     dynaconf_merge: true
   features:
     is_main: false
