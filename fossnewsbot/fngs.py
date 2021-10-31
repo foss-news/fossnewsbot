@@ -122,10 +122,7 @@ class BotUser:
             if user.last_name:
                 self.name += ' ' + user.last_name
 
-        self.lang = user.locale.language
-        if self.lang not in LANGUAGES:
-            self.lang = 'en'
-
+        self.lang = user.language_code if user.language_code and user.language_code in LANGUAGES else 'en'
         self.groups = groups if groups is not None else DEFAULT_GROUPS
 
     def __str__(self) -> str:
@@ -254,9 +251,13 @@ class FNGS:
 
         try:
             user_info = _fetch(user.id)
-        except (HTTPError, JSONDecodeError):
-            self.register_user(user)
-            user_info = _fetch(user.id)
+        except HTTPError as e:
+            r = e.response
+            if r.status_code == 404:
+                self.register_user(user)
+                user_info = _fetch(user.id)
+            else:
+                raise e
 
         try:
             groups = [g['name'] for g in user_info['groups']]

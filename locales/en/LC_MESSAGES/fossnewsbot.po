@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 1.0.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
-"POT-Creation-Date: 2021-09-29 18:14+0500\n"
-"PO-Revision-Date: 2021-09-29 18:14+0500\n"
+"POT-Creation-Date: 2021-10-31 23:05+0500\n"
+"PO-Revision-Date: 2021-10-31 23:05+0500\n"
 "Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -21,43 +21,47 @@ msgstr ""
 "X-Poedit-Basepath: ../../../fossnewsbot\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: __main__.py:55
+#: handlers.py:48
 msgid "English"
 msgstr "English"
 
-#: __main__.py:55
+#: handlers.py:48
 msgid "Russian"
 msgstr "Russian"
 
-#: __main__.py:56 __main__.py:73 __main__.py:76
+#: handlers.py:49 handlers.py:69 handlers.py:72
 msgid "Unknown"
 msgstr "Unknown"
 
-#: __main__.py:65
+#: handlers.py:59
 msgid "News left"
 msgstr "News left"
 
-#: __main__.py:67
+#: handlers.py:61
 msgid "Date"
 msgstr "Date"
 
-#: __main__.py:68
+#: handlers.py:62
 msgid "Language"
 msgstr "Language"
 
-#: __main__.py:71
-msgid "Keywords"
-msgstr "Keywords"
+#: handlers.py:65
+msgid "FOSS"
+msgstr "FOSS"
 
-#: __main__.py:74
+#: handlers.py:67
+msgid "Proprietary"
+msgstr "Proprietary"
+
+#: handlers.py:70
 msgid "Type"
 msgstr "Type"
 
-#: __main__.py:77
+#: handlers.py:73
 msgid "Category"
 msgstr "Category"
 
-#: __main__.py:115
+#: handlers.py:111
 msgid ""
 "No news yet.\n"
 "Please, try again later."
@@ -66,7 +70,7 @@ msgstr ""
 "Please, try again later."
 
 # All `.` and `!` must be escaped by backslashes
-#: __main__.py:125
+#: handlers.py:121
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -77,16 +81,16 @@ msgstr ""
 "But I have it in my backlog\\! 😉\n"
 "Please, check {channel} and {chat} for updates\\."
 
-#: __main__.py:130
+#: handlers.py:126
 msgid "channel"
 msgstr "channel"
 
-#: __main__.py:131
+#: handlers.py:127
 msgid "chat"
 msgstr "chat"
 
 # All `.` and `!` must be escaped by backslashes
-#: __main__.py:138
+#: handlers.py:134
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
@@ -95,11 +99,11 @@ msgstr ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 
-#: __main__.py:141 keyboards.py:103
+#: handlers.py:137 keyboards.py:103
 msgid "Next"
 msgstr "Next"
 
-#: __main__.py:153
+#: handlers.py:155
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
@@ -109,23 +113,23 @@ msgstr ""
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 
-#: __main__.py:194
+#: handlers.py:197
 msgid "In digest"
 msgstr "In digest"
 
-#: __main__.py:201
+#: handlers.py:204
 msgid "Not in digest"
 msgstr "Not in digest"
 
-#: __main__.py:203
+#: handlers.py:206
 msgid "Skip"
 msgstr "Skip"
 
-#: __main__.py:210
+#: handlers.py:213
 msgid "Main"
 msgstr "Main"
 
-#: __main__.py:212
+#: handlers.py:215
 msgid "Short"
 msgstr "Short"
 

@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU Affero General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import json
 import re
 from datetime import datetime
 from typing import Union
@@ -30,6 +29,7 @@ from requests import RequestException
 from . import keyboards, log
 from .core import bot, dispatcher, fngs
 from .config import config
+from .fngs import BotUser
 from .i18n import set_language
 from .keyboards import Command, Result
 
@@ -50,18 +50,21 @@ def format_news(news: dict) -> str:
     dt = news['dt'] if news['dt'] else news['gather_dt']
     dt = datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S%z').strftime('%x')
     lang = format_lang(news['language'])
-    keywords = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic']])
+    keywords_foss = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic'] and not k['proprietary']])
+    keywords_proprietary = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic'] and k['proprietary']])
     lines = [
         md.text(config.marker.count + ' ', md.italic(_('News left')), md.escape_md(': '), md.bold(news['count']), '\n', sep=''),
         md.link(news['title'], news['url']),
-        md.text(config.marker.date + ' ', md.italic(_('Date')), md.escape_md(': '), md.bold(dt), sep=''),
+        md.text('\n', config.marker.date + ' ', md.italic(_('Date')), md.escape_md(': '), md.bold(dt), sep=''),
         md.text(config.marker.lang + ' ', md.italic(_('Language')), md.escape_md(': '), md.bold(lang), sep=''),
     ]
-    if keywords:
-        lines.append(md.text(config.marker.keywords + ' ', md.italic(_('Keywords')), md.escape_md(': '), keywords, sep=''),)
+    if keywords_foss:
+        lines.append(md.text(config.marker.keywords.foss + ' ', md.italic(_('FOSS')), md.escape_md(': '), keywords_foss, sep=''),)
+    if keywords_proprietary:
+        lines.append(md.text(config.marker.keywords.proprietary + ' ', md.italic(_('Proprietary')), md.escape_md(': '), keywords_proprietary, sep=''),)
     if config.features.types:
         content_type = news['content_type'] if news['content_type'] else _('Unknown')
-        lines.append(md.text(config.marker.type + ' ', md.italic(_('Type')), md.escape_md(':', content_type), sep=''))
+        lines.append(md.text(config.marker.content_type + ' ', md.italic(_('Type')), md.escape_md(':', content_type), sep=''))
     if config.features.categories:
         content_category = news['content_category'] if news['content_category'] else _('Unknown')
         lines.append(md.text(config.marker.content_category + ' ', md.italic(_('Category')), md.escape_md(':', content_category), sep=''))
@@ -135,10 +138,15 @@ async def error(callback: CallbackQuery) -> None:
     await callback.answer()
 
 
-@dispatcher.message_handler(commands=['start'])
-async def start(message: Message) -> None:
+def init_user(message: Message) -> BotUser:
     user = fngs.fetch_user(message.from_user)
     set_language(user.lang)
+    return user
+
+
+@dispatcher.message_handler(commands=['start'])
+async def start(message: Message) -> None:
+    init_user(message)
     await message.answer(md.escape_md(_(
         "Hi! I'm FOSS News Bot!\n"
         "I can send you news articles so you can help to categorize them for a new digest."
@@ -147,29 +155,31 @@ async def start(message: Message) -> None:
 
 @dispatcher.message_handler(commands=['next'])
 async def next_news(message: Message) -> None:
-    user = fngs.fetch_user(message.from_user)
-    set_language(user.lang)
+    init_user(message)
     await msg_next(message)
 
 
 @dispatcher.message_handler(commands=['add'])
 async def add(message: Message) -> None:
-    user = fngs.fetch_user(message.from_user)
-    set_language(user.lang)
+    init_user(message)
     await not_implemented('add', message)
+
+
+@dispatcher.message_handler(commands=['test'])
+async def test(message: Message) -> None:
+    await message.answer(md.code(str(message.from_user)))
 
 
 @dispatcher.callback_query_handler()
 async def handler(callback: CallbackQuery) -> None:
-    user = fngs.fetch_user(callback.from_user)
+    user = init_user(callback.message)
     text = callback.message.md_text
     markup = callback.message.reply_markup
     no_preview = False
 
-    set_language(user.lang)
-
     try:
         cmd, news_id, result, value = keyboards.from_callback_data(callback.data)
+
         if cmd == Command.NEXT:
             await msg_next(callback)
             return

@@ -19,7 +19,10 @@ default:
     count: "📊"
     date: "🗓"
     lang: "🌏"
-    keywords: "🏷"
+    keywords:
+      title: "🏷"
+      foss: "🟢"
+      proprietary: "🟡"
     content_type: "🔖"
     content_category: "🗂"
     include: "✅"
