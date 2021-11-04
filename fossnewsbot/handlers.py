@@ -219,9 +219,9 @@ async def handler(callback: CallbackQuery) -> None:
         elif cmd == Command.CONTENT_TYPE:
             if result == Result.SET:
                 fngs.update_attempt(user, news_id, 'content_type', value)
-                text = update_text_attr(text, config.marker.type, fngs.types[value][user.lang])
+                text = update_text_attr(text, config.marker.content_type, fngs.types[value][user.lang])
             else:
-                text = update_text_attr(text, config.marker.type)
+                text = update_text_attr(text, config.marker.content_type)
             if config.features.categories or user.is_editor():
                 markup = keyboards.categories(news_id, fngs.categories, user.lang)
             else:
@@ -230,9 +230,9 @@ async def handler(callback: CallbackQuery) -> None:
         elif cmd == Command.CONTENT_CATEGORY:
             if result == Result.SET:
                 fngs.update_attempt(user, news_id, 'content_category', value)
-                text = update_text_attr(text, config.marker.content_type, fngs.categories[value][user.lang])
+                text = update_text_attr(text, config.marker.content_category, fngs.categories[value][user.lang])
             else:
-                text = update_text_attr(text, config.marker.content_type)
+                text = update_text_attr(text, config.marker.content_category)
             markup = keyboards.next_news()
 
         else:
