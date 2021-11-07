@@ -58,7 +58,7 @@ COPY --from=build --chown=bot:bot /locales locales
 
 # Change user AFTER all chowns
 USER bot
-# Correct venv directory in the activation script and make entrypoint script executable
+# Fix venv directory in the activation script and make entrypoint script executable
 RUN sed "/^VIRTUAL_ENV=/s:/:$PWD/:" -i venv/bin/activate && chmod +x entrypoint.sh
 
 ENV PATH="$workdir:$PATH" LANG="ru_RU.UTF-8" LC_MESSAGES="en_US.UTF-8"

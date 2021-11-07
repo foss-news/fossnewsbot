@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 1.0.0\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
-"POT-Creation-Date: 2021-09-11 16:05+0500\n"
-"PO-Revision-Date: 2021-09-11 16:05+0500\n"
+"POT-Creation-Date: 2021-11-07 23:10+0500\n"
+"PO-Revision-Date: 2021-11-07 23:10+0500\n"
 "Last-Translator: Vasiliy Polyakov <fossnews@invasy.dev>\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -21,43 +21,47 @@ msgstr ""
 "X-Poedit-Basepath: ../../../fossnewsbot\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: handlers.py:44
+#: handlers.py:45
 msgid "English"
 msgstr "English"
 
-#: handlers.py:44
+#: handlers.py:45
 msgid "Russian"
 msgstr "Russian"
 
-#: handlers.py:45 handlers.py:61 handlers.py:64
+#: handlers.py:46 handlers.py:66 handlers.py:69
 msgid "Unknown"
 msgstr "Unknown"
 
-#: handlers.py:53
+#: handlers.py:56
 msgid "News left"
 msgstr "News left"
 
-#: handlers.py:55
+#: handlers.py:58
 msgid "Date"
 msgstr "Date"
 
-#: handlers.py:56
+#: handlers.py:59
 msgid "Language"
 msgstr "Language"
 
-#: handlers.py:59
-msgid "Keywords"
-msgstr "Keywords"
-
 #: handlers.py:62
+msgid "FOSS"
+msgstr "FOSS"
+
+#: handlers.py:64
+msgid "Proprietary"
+msgstr "Proprietary"
+
+#: handlers.py:67
 msgid "Type"
 msgstr "Type"
 
-#: handlers.py:65
+#: handlers.py:70
 msgid "Category"
 msgstr "Category"
 
-#: handlers.py:103
+#: handlers.py:107
 msgid ""
 "No news yet.\n"
 "Please, try again later."
@@ -66,7 +70,7 @@ msgstr ""
 "Please, try again later."
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:113
+#: handlers.py:117
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -77,16 +81,16 @@ msgstr ""
 "But I have it in my backlog\\! 😉\n"
 "Please, check {channel} and {chat} for updates\\."
 
-#: handlers.py:118
+#: handlers.py:122
 msgid "channel"
 msgstr "channel"
 
-#: handlers.py:119
+#: handlers.py:123
 msgid "chat"
 msgstr "chat"
 
 # All `.` and `!` must be escaped by backslashes
-#: handlers.py:126
+#: handlers.py:130
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
@@ -95,11 +99,11 @@ msgstr ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 
-#: handlers.py:129 keyboards.py:104
+#: handlers.py:133 keyboards.py:103
 msgid "Next"
 msgstr "Next"
 
-#: handlers.py:142
+#: handlers.py:150
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
@@ -109,23 +113,23 @@ msgstr ""
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 
-#: handlers.py:183
+#: handlers.py:194
 msgid "In digest"
 msgstr "In digest"
 
-#: handlers.py:187
+#: handlers.py:201
 msgid "Not in digest"
 msgstr "Not in digest"
 
-#: handlers.py:189
+#: handlers.py:203
 msgid "Skip"
 msgstr "Skip"
 
-#: handlers.py:196
+#: handlers.py:210
 msgid "Main"
 msgstr "Main"
 
-#: handlers.py:198
+#: handlers.py:212
 msgid "Short"
 msgstr "Short"
 
@@ -141,22 +145,22 @@ msgstr "No"
 msgid "Don't know"
 msgstr "Don't know"
 
-#: keyboards.py:93
+#: keyboards.py:92
 msgid "Keep"
 msgstr "Keep"
 
-#: keyboards.py:111
+#: keyboards.py:110
 msgid "Include in digest?"
 msgstr "Include in digest?"
 
-#: keyboards.py:115
+#: keyboards.py:114
 msgid "Include in main news?"
 msgstr "Include in main news?"
 
-#: keyboards.py:119
+#: keyboards.py:118
 msgid "Choose type"
 msgstr "Choose type"
 
-#: keyboards.py:123
+#: keyboards.py:122
 msgid "Choose category"
 msgstr "Choose category"

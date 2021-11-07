@@ -2,6 +2,7 @@
 .vscode/
 venv/
 __pycache__/
+*.local.*
 .secrets.*
 !.secrets.*.dist
 *.mo

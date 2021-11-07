@@ -22,16 +22,7 @@ fossnewsbot sends you news collected for the next digest one by one to filter an
 
 from logging import getLogger
 
-from aiogram import Bot, Dispatcher
-from aiogram.types import ParseMode
-
-from .config import config
-from .fngs import Fngs
-
 
 __version__ = '1.0.0'
 
-log = getLogger(__name__)
-bot = Bot(token=config.bot.token, parse_mode=ParseMode.MARKDOWN_V2)
-dispatcher = Dispatcher(bot)
-fngs = Fngs(config.fngs.endpoint, config.fngs.username, config.fngs.password)
+log = getLogger('bot')

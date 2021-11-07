@@ -24,7 +24,8 @@ import sys
 from aiogram import executor
 from requests import RequestException
 
-from . import log, fngs, dispatcher, handlers
+from . import handlers, log
+from .core import dispatcher, fngs
 from .config import config
 
 
@@ -53,4 +54,12 @@ if __name__ == '__main__':
     if config.env != 'production':
         random.seed()
 
-    executor.start_polling(dispatcher, timeout=60, skip_updates=True)
+    executor.start_webhook(
+        dispatcher=dispatcher,
+        skip_updates=True,
+        on_startup=handlers.on_startup,
+        on_shutdown=handlers.on_shutdown,
+        host=config.bot.host,
+        port=config.bot.port,
+        webhook_path=config.webhook.path,
+    )
