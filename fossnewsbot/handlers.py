@@ -22,7 +22,7 @@ from datetime import datetime
 from typing import Union
 
 from aiogram import Dispatcher, md
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, Message, User
 from aiogram.utils.exceptions import CantParseEntities, InvalidQueryID
 from requests import RequestException
 
@@ -94,7 +94,6 @@ async def msg_next(msg: Union[Message, CallbackQuery]) -> None:
     if isinstance(msg, CallbackQuery):
         cb = msg
         msg = cb.message
-        user = cb.from_user
 
     news = fngs.fetch_news(user)
     if news:
@@ -138,15 +137,15 @@ async def error(callback: CallbackQuery) -> None:
     await callback.answer()
 
 
-def init_user(message: Message) -> BotUser:
-    user = fngs.fetch_user(message.from_user)
+def init_user(user: User) -> BotUser:
+    user = fngs.fetch_user(user)
     set_language(user.lang)
     return user
 
 
 @dispatcher.message_handler(commands=['start'])
 async def start(message: Message) -> None:
-    init_user(message)
+    init_user(message.from_user)
     await message.answer(md.escape_md(_(
         "Hi! I'm FOSS News Bot!\n"
         "I can send you news articles so you can help to categorize them for a new digest."
@@ -155,13 +154,13 @@ async def start(message: Message) -> None:
 
 @dispatcher.message_handler(commands=['next'])
 async def next_news(message: Message) -> None:
-    init_user(message)
+    init_user(message.from_user)
     await msg_next(message)
 
 
 @dispatcher.message_handler(commands=['add'])
 async def add(message: Message) -> None:
-    init_user(message)
+    init_user(message.from_user)
     await not_implemented('add', message)
 
 
@@ -172,7 +171,7 @@ async def test(message: Message) -> None:
 
 @dispatcher.callback_query_handler()
 async def handler(callback: CallbackQuery) -> None:
-    user = init_user(callback.message)
+    user = init_user(callback.from_user)
     text = callback.message.md_text
     markup = callback.message.reply_markup
     no_preview = False

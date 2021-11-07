@@ -281,7 +281,7 @@ class FNGS:
 
         try:
             news = self._request('telegram-bot-one-random-not-categorized-foss-news-digest-record', 'get',
-                                 query={'tbot-user-id': user.id}).json()[0]
+                                 query={'tbot-user-id': user.id}).json()['results'][0]
             log.info("%s fetched news: %i \"%s\"", user, news['id'], news['title'])
         except (JSONDecodeError, IndexError):
             news = {}
