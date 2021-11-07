@@ -232,12 +232,12 @@ class FNGS:
         try:
             user.id = self._request('telegram-bot-user', 'post',
                                     data=dict(tid=user.tid, username=user.name)).json()['id']
-            log.info("%s registered successfully", user)
+            log.info("%s was registered successfully", user)
             return user.id
         except HTTPError as e:
             r = e.response
             if r.status_code == 400:  # TODO: make error code more specific
-                log.warning("%s already registered: %s", user, r.json()['tid'][0])
+                log.warning("%s was already registered: %s", user, r.json()['tid'][0])
                 return None
             else:
                 raise e
@@ -264,7 +264,7 @@ class FNGS:
         except KeyError:
             groups = None
         user = BotUser(user, user_info['id'], groups)
-        log.info("%s fetched id", user)
+        log.info("%s was fetched", user)
 
         return user
 
@@ -282,10 +282,10 @@ class FNGS:
         try:
             news = self._request('telegram-bot-one-random-not-categorized-foss-news-digest-record', 'get',
                                  query={'tbot-user-id': user.id}).json()['results'][0]
-            log.info("%s fetched news: %i \"%s\"", user, news['id'], news['title'])
+            log.info("%s fetched news: id=%i \"%s\"", user, news['id'], news['title'])
         except (JSONDecodeError, IndexError):
             news = {}
-            log.warning("%s fetched no news", user)
+            log.warning("%s has no news", user)
 
         return news
 
@@ -315,7 +315,7 @@ class FNGS:
             attempt_id = r.json()['id']
         else:
             attempt_id = randint(0, 255)
-        log.info("%s sent attempt: %i news=%i state=%s", user, attempt_id, news_id, state)
+        log.info("%s sent attempt: id=%i news=%i state=%s", user, attempt_id, news_id, state)
 
         return attempt_id
 
@@ -327,4 +327,4 @@ class FNGS:
         if config.env == 'production':
             self._request('telegram-bot-digest-record-categorization-attempt', 'patch',
                           data={'id': attempt_id, field: value})
-        log.info("%s updated attempt: %i %s=%s", user, attempt_id, field, value)
+        log.info("%s updated attempt: id=%i %s=%s", user, attempt_id, field, value)
