@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fossnewsbot 1.0.0\n"
-"POT-Creation-Date: 2021-09-11 16:05+0500\n"
+"POT-Creation-Date: 2021-11-07 23:10+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Report-Msgid-Bugs-To: Vasiliy Polyakov <fossnews@invasy.dev>\n"
@@ -20,53 +20,53 @@ msgstr ""
 "X-Poedit-Basepath: ../fossnewsbot\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: handlers.py:48
+#: handlers.py:45
 msgid "English"
 msgstr ""
 
-#: handlers.py:48
+#: handlers.py:45
 msgid "Russian"
 msgstr ""
 
-#: handlers.py:49 handlers.py:69 handlers.py:72
+#: handlers.py:46 handlers.py:66 handlers.py:69
 msgid "Unknown"
 msgstr ""
 
-#: handlers.py:59
+#: handlers.py:56
 msgid "News left"
 msgstr ""
 
-#: handlers.py:61
+#: handlers.py:58
 msgid "Date"
 msgstr ""
 
-#: handlers.py:62
+#: handlers.py:59
 msgid "Language"
 msgstr ""
 
-#: handlers.py:65
+#: handlers.py:62
 msgid "FOSS"
 msgstr ""
 
-#: handlers.py:67
+#: handlers.py:64
 msgid "Proprietary"
 msgstr ""
 
-#: handlers.py:70
+#: handlers.py:67
 msgid "Type"
 msgstr ""
 
-#: handlers.py:73
+#: handlers.py:70
 msgid "Category"
 msgstr ""
 
-#: handlers.py:111
+#: handlers.py:107
 msgid ""
 "No news yet.\n"
 "Please, try again later."
 msgstr ""
 
-#: handlers.py:121
+#: handlers.py:117
 #, python-brace-format
 msgid ""
 "Command {command} is not implemented yet\\.\n"
@@ -74,49 +74,49 @@ msgid ""
 "Please, check {channel} and {chat} for updates\\."
 msgstr ""
 
-#: handlers.py:126
+#: handlers.py:122
 msgid "channel"
 msgstr ""
 
-#: handlers.py:127
+#: handlers.py:123
 msgid "chat"
 msgstr ""
 
-#: handlers.py:134
+#: handlers.py:130
 #, python-brace-format
 msgid ""
 "Something went wrong\\.\n"
 "Please, press {next} and try again\\."
 msgstr ""
 
-#: handlers.py:137 keyboards.py:103
+#: handlers.py:133 keyboards.py:103
 msgid "Next"
 msgstr ""
 
-#: handlers.py:155
+#: handlers.py:150
 msgid ""
 "Hi! I'm FOSS News Bot!\n"
 "I can send you news articles so you can help to categorize them for a new "
 "digest."
 msgstr ""
 
-#: handlers.py:197
+#: handlers.py:194
 msgid "In digest"
 msgstr ""
 
-#: handlers.py:204
+#: handlers.py:201
 msgid "Not in digest"
 msgstr ""
 
-#: handlers.py:206
+#: handlers.py:203
 msgid "Skip"
 msgstr ""
 
-#: handlers.py:213
+#: handlers.py:210
 msgid "Main"
 msgstr ""
 
-#: handlers.py:215
+#: handlers.py:212
 msgid "Short"
 msgstr ""
 
