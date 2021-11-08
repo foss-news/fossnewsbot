@@ -325,6 +325,6 @@ class FNGS:
             user = self.fetch_user(user)
 
         if config.env == 'production':
-            self._request('telegram-bot-digest-record-categorization-attempt', 'patch',
-                          data={'id': attempt_id, field: value})
+            self._request(f'telegram-bot-digest-record-categorization-attempt/{attempt_id}', 'patch',
+                          data={field: value})
         log.info("%s updated attempt: id=%i %s=%s", user, attempt_id, field, value)
