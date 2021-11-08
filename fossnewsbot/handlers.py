@@ -205,7 +205,7 @@ async def handler(callback: CallbackQuery) -> None:
                 no_preview = True
 
         elif cmd == Command.IS_MAIN:
-            fngs.update_attempt(user, news_id, 'is_main', result == Result.YES)
+            fngs.update_attempt(user, news_id, 'estimated_is_main', result == Result.YES)
             if result == Result.YES:
                 text += append_result(config.marker.is_main, _('Main'))
             else:
