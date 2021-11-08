@@ -23,6 +23,6 @@ fossnewsbot sends you news collected for the next digest one by one to filter an
 from logging import getLogger
 
 
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 log = getLogger('bot')
