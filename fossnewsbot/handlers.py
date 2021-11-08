@@ -205,7 +205,7 @@ async def handler(callback: CallbackQuery) -> None:
                 no_preview = True
 
         elif cmd == Command.IS_MAIN:
-            fngs.update_attempt(user, news_id, 'is_main', result == Result.YES)
+            fngs.update_attempt(user, news_id, 'estimated_is_main', result == Result.YES)
             if result == Result.YES:
                 text += append_result(config.marker.is_main, _('Main'))
             else:
@@ -217,7 +217,7 @@ async def handler(callback: CallbackQuery) -> None:
 
         elif cmd == Command.CONTENT_TYPE:
             if result == Result.SET:
-                fngs.update_attempt(user, news_id, 'content_type', value)
+                fngs.update_attempt(user, news_id, 'estimated_content_type', value)
                 text = update_text_attr(text, config.marker.content_type, fngs.types[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.content_type)
@@ -228,7 +228,7 @@ async def handler(callback: CallbackQuery) -> None:
 
         elif cmd == Command.CONTENT_CATEGORY:
             if result == Result.SET:
-                fngs.update_attempt(user, news_id, 'content_category', value)
+                fngs.update_attempt(user, news_id, 'estimated_content_category', value)
                 text = update_text_attr(text, config.marker.content_category, fngs.categories[value][user.lang])
             else:
                 text = update_text_attr(text, config.marker.content_category)
