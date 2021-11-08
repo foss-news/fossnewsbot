@@ -61,6 +61,7 @@ TEST_CATEGORIES = dict(
     DIY=dict(en='DIY', ru='DIY'),
     LAW=dict(en='Law & Legal', ru='Юридические вопросы'),
     KnD=dict(en='Kernel & Drivers', ru='Ядро и дистрибутивы'),
+    SYSTEM=dict(en='System', ru='Системное'),
     SPECIAL=dict(en='Special', ru='Специальное'),
     EDUCATION=dict(en='Education', ru='Обучение'),
     DATABASES=dict(en='Databases', ru='Базы данных'),
@@ -78,6 +79,7 @@ TEST_CATEGORIES = dict(
     USER=dict(en='User', ru='Пользовательское'),
     GAMES=dict(en='Games', ru='Игры'),
     HARDWARE=dict(en='Hardware', ru='Железо'),
+    MESSENGERS=dict(en='Messengers', ru='Мессенджеры'),
     MISC=dict(en='Misc', ru='Разное'),
 )
 
