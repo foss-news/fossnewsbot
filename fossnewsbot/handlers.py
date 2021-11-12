@@ -48,7 +48,7 @@ def format_lang(lang: str) -> str:
 
 def format_news(news: dict) -> str:
     dt = news['dt'] if news['dt'] else news['gather_dt']
-    dt = datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S%z').strftime('%x')
+    dt = datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S.%f%z').strftime('%x')
     lang = format_lang(news['language'])
     keywords_foss = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic'] and not k['proprietary']])
     keywords_proprietary = ', '.join([md.bold(k['name']) for k in news['title_keywords'] if not k['is_generic'] and k['proprietary']])
