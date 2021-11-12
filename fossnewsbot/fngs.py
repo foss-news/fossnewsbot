@@ -72,7 +72,7 @@ TEST_CATEGORIES = dict(
     DEVOPS=dict(en='DevOps', ru='DevOps'),
     DATA_SCIENCE=dict(en='AI & Data Science', ru='AI & Data Science'),
     WEB=dict(en='Web', ru='Web'),
-    DEV=dict(en='Development', ru='Для разработчиков'),
+    DEV=dict(en='Development', ru='Разработка'),
     TESTING=dict(en='Testing', ru='Тестирование'),
     HISTORY=dict(en='History', ru='История'),
     MANAGEMENT=dict(en='Management', ru='Менеджмент'),
