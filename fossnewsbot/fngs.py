@@ -232,7 +232,7 @@ class FNGS:
         """Register Telegram user on FNGS server"""
         user = BotUser(user)
         try:
-            user.id = self._request('telegram-bot-user', 'post',
+            user.id = self._request('user', 'post',
                                     data=dict(tid=user.tid, username=user.name)).json()['id']
             log.info("%s was registered successfully", user)
             return user.id
@@ -274,7 +274,7 @@ class FNGS:
         if isinstance(user, User):
             user = self.fetch_user(user)
         raise NotImplementedError('implement `news_lang` field in `telegram-bot-user` model')
-        # self._request('telegram-bot-user', 'patch', data=dict(id=user.id, news_lang=lang))
+        # self._request('user', 'patch', data=dict(id=user.id, news_lang=lang))
 
     def fetch_news(self, user: Union[User, BotUser]) -> dict:
         """Fetch next random uncategorized news for this user"""
@@ -282,8 +282,8 @@ class FNGS:
             user = self.fetch_user(user)
 
         try:
-            news = self._request('telegram-bot-one-random-not-categorized-foss-news-digest-record', 'get',
-                                 query={'tbot-user-id': user.id}).json()['results'][0]
+            news = self._request('digest-record/not-categorized/random', 'get',
+                                 query={'tbot-user-id': user.id, 'project': 'FOSS News'}).json()['results'][0]
             log.info("%s fetched news: id=%i \"%s\"", user, news['id'], news['title'])
         except (JSONDecodeError, IndexError):
             news = {}
@@ -296,8 +296,8 @@ class FNGS:
         if isinstance(user, User):
             user = self.fetch_user(user)
 
-        count = self._request('telegram-bot-not-categorized-foss-news-digest-records-count', 'get',
-                              query={'tbot-user-id': user.id}).json()['count']
+        count = self._request('digest-record/not-categorized/count', 'get',
+                              query={'tbot-user-id': user.id, 'project': 'FOSS News'}).json()['count']
         log.info("%s fetched news count: %i", user, count)
 
         return count
@@ -308,7 +308,7 @@ class FNGS:
             user = self.fetch_user(user)
 
         if config.env == 'production':
-            r = self._request('telegram-bot-digest-record-categorization-attempt', 'post', data=dict(
+            r = self._request('digest-record/categorization-attempt', 'post', data=dict(
                 dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S%z'),
                 telegram_bot_user=user.id,
                 digest_record=news_id,
@@ -327,6 +327,6 @@ class FNGS:
             user = self.fetch_user(user)
 
         if config.env == 'production':
-            self._request(f'telegram-bot-digest-record-categorization-attempt/{attempt_id}', 'patch',
+            self._request(f'digest-record/categorization-attempt/{attempt_id}', 'patch',
                           data={field: value})
         log.info("%s updated attempt: id=%i %s=%s", user, attempt_id, field, value)
