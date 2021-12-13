@@ -249,7 +249,7 @@ class FNGS:
         """Fetch FNGS id and info for Telegram user"""
 
         def _fetch(tid: int) -> Any:
-            return self._request('telegram-bot-user-by-tid', 'get', query=dict(tid=tid)).json()
+            return self._request('user', 'get', query=dict(tid=tid)).json()
 
         try:
             user_info = _fetch(user.id)
