@@ -40,7 +40,7 @@ development:
     path: "/bot-dev/"
     dynaconf_merge: true
   fngs:
-    endpoint: "https://fn-dev.permlug.org/api/v2/tbot"
+    endpoint: "https://fn-dev.permlug.org/api/v2/"
     dynaconf_merge: true
   cache:
     attrs:
