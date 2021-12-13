@@ -232,7 +232,7 @@ class FNGS:
         """Register Telegram user on FNGS server"""
         user = BotUser(user)
         try:
-            user.id = self._request('user', 'post',
+            user.id = self._request('user/simple', 'post',
                                     data=dict(tid=user.tid, username=user.name)).json()['id']
             log.info("%s was registered successfully", user)
             return user.id
@@ -249,7 +249,7 @@ class FNGS:
         """Fetch FNGS id and info for Telegram user"""
 
         def _fetch(tid: int) -> Any:
-            return self._request('user', 'get', query=dict(tid=tid)).json()
+            return self._request('user/simple', 'get', query=dict(tid=tid)).json()
 
         try:
             user_info = _fetch(user.id)
