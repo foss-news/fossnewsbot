@@ -307,7 +307,7 @@ class FNGS:
         if isinstance(user, User):
             user = self.fetch_user(user)
 
-        if config.env == 'production':
+        if config.env in ('production', 'development'):
             r = self._request('tbot/digest-record/categorization-attempt', 'post', data=dict(
                 dt=datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S%z'),
                 telegram_bot_user=user.id,
@@ -326,7 +326,7 @@ class FNGS:
         if isinstance(user, User):
             user = self.fetch_user(user)
 
-        if config.env == 'production':
+        if config.env in ('production', 'development'):
             self._request(f'tbot/digest-record/categorization-attempt/{attempt_id}', 'patch',
                           data={field: value})
         log.info("%s updated attempt: id=%i %s=%s", user, attempt_id, field, value)
