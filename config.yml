@@ -63,7 +63,7 @@ production:
     path: "/bot/"
     dynaconf_merge: true
   fngs:
-    endpoint: "https://fn.permlug.org/api/v1/"
+    endpoint: "https://fn.permlug.org/api/v2/"
     dynaconf_merge: true
   cache:
     attrs:
