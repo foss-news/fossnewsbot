@@ -182,7 +182,7 @@ class FNGS:
     @cached_property_with_ttl(days=config.cache.token.ttl)
     def token(self):
         """Fetch FNGS token"""
-        t = self._http.post('token/', data=self._auth).json()['access']
+        t = self._http.post('auth/token/', data=self._auth).json()['access']
         log.info('fetched token')
         return t
 
